@@ -15,15 +15,16 @@ namespace Tests.Rules
         {
         }
 
+        #region Avg score tests
+
         [Test]
-        public void Rules_HcpAvgThrid_Should_CalculateHcp_NoRounds()
+        public void Rules_HcpAvgThrid_Should_CalculateAvgScore_NoRounds()
         {
-            var player = PlayerObjectMother.GetPlayer();
-            player.Rounds = new List<Round>();
+            var rounds = new List<Round>();
 
             var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
 
-            var value = rule.CalculateAvgScore(player);
+            var value = rule.CalculateAvgScore(rounds);
 
             Assert.IsTrue(value == 0.0);
 
@@ -31,10 +32,9 @@ namespace Tests.Rules
         }
 
         [Test]
-        public void Rules_HcpAvgThrid_Should_CalculateHcp_NotAll_Scenario_1_0()
+        public void Rules_HcpAvgThrid_Should_CalculateAvgScore_NotAll_Scenario_1_0()
         {
-            var player = PlayerObjectMother.GetPlayer();
-            player.Rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
+            var rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
             {
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-01"), 59)
             });
@@ -42,7 +42,7 @@ namespace Tests.Rules
 
             var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
 
-            var value = rule.CalculateAvgScore(player);
+            var value = rule.CalculateAvgScore(rounds);
 
             Assert.IsTrue(value == 59.0);
 
@@ -50,10 +50,9 @@ namespace Tests.Rules
         }
 
         [Test]
-        public void Rules_HcpAvgThrid_Should_CalculateHcp_NotAll_Scenario_1_1()
+        public void Rules_HcpAvgThrid_Should_CalculateAvgScore_NotAll_Scenario_1_1()
         {
-            var player = PlayerObjectMother.GetPlayer();
-            player.Rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
+            var rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
             {
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-01"), 59),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-02"), 60),
@@ -62,7 +61,7 @@ namespace Tests.Rules
 
             var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
 
-            var value = rule.CalculateAvgScore(player);
+            var value = rule.CalculateAvgScore(rounds);
 
             Assert.IsTrue(value == 59.0);
             
@@ -70,10 +69,9 @@ namespace Tests.Rules
         }
 
         [Test]
-        public void Rules_HcpAvgThrid_Should_CalculateHcp_NotAll_Scenario_1_2()
+        public void Rules_HcpAvgThrid_Should_CalculateAvgScore_NotAll_Scenario_1_2()
         {
-            var player = PlayerObjectMother.GetPlayer();
-            player.Rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
+            var rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
             {
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-01"), 59),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-02"), 60),
@@ -83,7 +81,7 @@ namespace Tests.Rules
 
             var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
 
-            var value = rule.CalculateAvgScore(player);
+            var value = rule.CalculateAvgScore(rounds);
 
             Assert.IsTrue(value == 59.0);
 
@@ -91,21 +89,20 @@ namespace Tests.Rules
         }
 
         [Test]
-        public void Rules_HcpAvgThrid_Should_CalculateHcp_NotAll_Scenario_1_3()
+        public void Rules_HcpAvgThrid_Should_CalculateAvgScore_NotAll_Scenario_1_3()
         {
-            var player = PlayerObjectMother.GetPlayer();
-            player.Rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
+            var rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
             {
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-01"), 59),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-02"), 60),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-03"), 61),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-04"), 62),
-                new Tuple<DateTime, int>(DateTime.Parse("2020-01-04"), 62)
+                new Tuple<DateTime, int>(DateTime.Parse("2020-01-05"), 62)
             });
 
             var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
 
-            var value = rule.CalculateAvgScore(player);
+            var value = rule.CalculateAvgScore(rounds);
 
             Assert.IsTrue(value == 59.0);
 
@@ -113,22 +110,21 @@ namespace Tests.Rules
         }
 
         [Test]
-        public void Rules_HcpAvgThrid_Should_CalculateHcp_NotAll_Scenario_1_4()
+        public void Rules_HcpAvgThrid_Should_CalculateAvgScore_NotAll_Scenario_1_4()
         {
-            var player = PlayerObjectMother.GetPlayer();
-            player.Rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
+            var rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
             {
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-01"), 59),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-02"), 60),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-03"), 61),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-04"), 62),
-                new Tuple<DateTime, int>(DateTime.Parse("2020-01-04"), 63),
-                new Tuple<DateTime, int>(DateTime.Parse("2020-01-04"), 64)
+                new Tuple<DateTime, int>(DateTime.Parse("2020-01-05"), 63),
+                new Tuple<DateTime, int>(DateTime.Parse("2020-01-06"), 64)
             });
 
             var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
 
-            var value = rule.CalculateAvgScore(player);
+            var value = rule.CalculateAvgScore(rounds);
 
             Assert.IsTrue(value == 59.5);
 
@@ -136,10 +132,9 @@ namespace Tests.Rules
         }
 
         [Test]
-        public void Rules_HcpAvgThrid_Should_CalculateHcp_All_Scenario_1_0()
+        public void Rules_HcpAvgThrid_Should_CalculateAvgScore_All_Scenario_1_0()
         {
-            var player = PlayerObjectMother.GetPlayer();
-            player.Rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
+            var rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
             {
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-01"), 59),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-02"), 60),
@@ -148,7 +143,7 @@ namespace Tests.Rules
 
             var rule = new RuleAvgThirdFloored() { TotalRounds = 3 };
 
-            var value = rule.CalculateAvgScore(player);
+            var value = rule.CalculateAvgScore(rounds);
 
             Assert.IsTrue(value == 59.0);
 
@@ -157,10 +152,9 @@ namespace Tests.Rules
 
 
         [Test]
-        public void Rules_HcpAvgThrid_Should_CalculateHcp_All18_Scenario_1_1()
+        public void Rules_HcpAvgThrid_Should_CalculateAvgScore_All18_Scenario_1_1()
         {
-            var player = PlayerObjectMother.GetPlayer();
-            player.Rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
+            var rounds = RoundObjectMother.GetRounds(new List<Tuple<DateTime, int>>
             {
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-01"), 59),
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-02"), 60),
@@ -170,13 +164,69 @@ namespace Tests.Rules
 
             var rule = new RuleAvgThirdFloored() { TotalRounds = 3 };
 
-            var value = rule.CalculateAvgScore(player);
+            var value = rule.CalculateAvgScore(rounds);
 
             Assert.IsTrue(value == 60.0);
 
             Assert.Pass();
         }
 
-        //TODO order by date
+        #endregion
+
+        #region Hcp tests
+
+        [Test]
+        public void Rules_HcpAvgThrid_Should_CalculateHcp_NoRounds()
+        {
+            var avgScore = 0;
+            var rule = new RuleAvgThirdFloored();
+
+            var value = rule.CalculateHcp(avgScore);
+
+            Assert.IsTrue(value == 0.0);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void Rules_HcpAvgThrid_Should_CalculateHcp_Scenario_1_0()
+        {
+            var avgScore = 48;
+            var rule = new RuleAvgThirdFloored();
+
+            var value = rule.CalculateHcp(avgScore);
+
+            Assert.IsTrue(value == 0.0);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void Rules_HcpAvgThrid_Should_CalculateHcp_Scenario_1_1()
+        {
+            var avgScore = 58;
+            var rule = new RuleAvgThirdFloored();
+
+            var value = rule.CalculateHcp(avgScore);
+
+            Assert.IsTrue(value == 8.0);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void Rules_HcpAvgThrid_Should_CalculateHcp_Scenario_1_2()
+        {
+            var avgScore = 50;
+            var rule = new RuleAvgThirdFloored();
+
+            var value = rule.CalculateHcp(avgScore);
+
+            Assert.IsTrue(value == 1.6);
+
+            Assert.Pass();
+        }
+
+        #endregion
     }
 }
