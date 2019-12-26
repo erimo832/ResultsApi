@@ -18,7 +18,13 @@ namespace ResultApi.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            
             return roundRespository.GetSeries();
         }
+
+        //TODO:
+        // add post of new csv
+        // must att tornament date
+
     }
 }

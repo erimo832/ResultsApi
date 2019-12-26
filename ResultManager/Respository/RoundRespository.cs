@@ -9,7 +9,8 @@ namespace ResultManager.Respository
 {
     public class RoundRespository : IRoundRespository
     {
-        private string SeriesRootPath => Directory.GetCurrentDirectory() + @"\series";
+        //private string SeriesRootPath => Directory.GetCurrentDirectory() + @"\series";
+        private string SeriesRootPath => @"C:\discgolf\series";
         private const char Separator = ',';
 
         private const int Col_DivCode = 0;
@@ -51,6 +52,9 @@ namespace ResultManager.Respository
             {
                 var lines = File.ReadAllLines(ev.FullName);
 
+                //TODO: A better way to get time of round
+                var roundDate = DateTime.Parse(ev.Name.Substring(0, 10));
+
                 //Ignore header
                 for (int i = 1; i < lines.Length; i++)
                 {
@@ -58,6 +62,7 @@ namespace ResultManager.Respository
 
                     rounds.Add(new Round
                     {
+                        RoundTime = roundDate,
                         EventName = ev.Name.Substring(0, ev.Name.Length - 4),
                         DivCode = columns[Col_DivCode].Replace("=", "").Replace("\"", ""),
                         Place = Convert.ToInt32(columns[Col_Place]),
