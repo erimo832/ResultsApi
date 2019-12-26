@@ -29,6 +29,33 @@ namespace ResultManager.Respository
             return dir.GetDirectories().Select(x => x.Name).ToList();
         }
 
+        public IList<string> GetRoundInformations()
+        {
+            var series = GetSeries();
+            var result = new List<string>();
+
+            foreach (var item in series)
+            {
+                result.AddRange(GetRoundInformations(item));
+            }
+
+            return result;
+        }
+
+        public IList<string> GetRoundInformations(string serie)
+        {
+            var result = new List<string>();
+
+            var events = new DirectoryInfo(SeriesRootPath + @"\" + serie).GetFiles("*.csv");
+
+            foreach (var ev in events)
+            {
+                result.Add(ev.Name.Replace(".csv", ""));
+            }
+
+            return result;
+        }
+
         public IList<PlayerRound> GetRounds()
         {
             var series = GetSeries();

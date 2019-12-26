@@ -31,7 +31,16 @@ namespace ResultApi.Controllers
         [HttpGet]
         public IEnumerable<Round> Get()
         {
-            throw new NotImplementedException();
+            var result = new List<Round>();
+
+            var events = roundRespository.GetRoundInformations();
+
+            foreach (var ev in events)
+            {
+                result.Add(seriesManager.GetRound(ev));
+            }
+
+            return result;
         }
 
         [HttpGet("{name}")]
