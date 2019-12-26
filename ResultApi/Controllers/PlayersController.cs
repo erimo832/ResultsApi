@@ -51,7 +51,7 @@ namespace ResultApi.Controllers
 
             if (player != null)
             {
-                var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
+                var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
 
                 return rule.CalculateHcp(player.Rounds);
             }
