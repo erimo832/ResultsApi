@@ -13,7 +13,7 @@ namespace ResultManager.Rules
         public double SlopeFactor { get; set; } = 0.8;
         public int HcpDecimals { get; set; } = 1;
 
-        public double CalculateAvgScore(List<Round> rounds)
+        public double CalculateAvgScore(List<PlayerRound> rounds)
         {
             var cnt = Math.Ceiling(TotalRounds / 3.0);
             if (rounds.Count < TotalRounds)
@@ -30,7 +30,7 @@ namespace ResultManager.Rules
             return topThirdRounds.OrderBy(x => x.Score).Take(takeCnt).Sum(x => x.Score) / Convert.ToDouble(takeCnt);
         }
 
-        public double CalculateHcp(List<Round> rounds)
+        public double CalculateHcp(List<PlayerRound> rounds)
         {
             return CalculateHcp(CalculateAvgScore(rounds));
         }

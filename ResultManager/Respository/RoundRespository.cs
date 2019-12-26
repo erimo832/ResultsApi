@@ -29,10 +29,10 @@ namespace ResultManager.Respository
             return dir.GetDirectories().Select(x => x.Name).ToList();
         }
 
-        public IList<Round> GetRounds()
+        public IList<PlayerRound> GetRounds()
         {
             var series = GetSeries();
-            var result = new List<Round>();
+            var result = new List<PlayerRound>();
 
             foreach (var item in series)
             {
@@ -42,11 +42,11 @@ namespace ResultManager.Respository
             return result;
         }
 
-        public IList<Round> GetRounds(string series)
+        public IList<PlayerRound> GetRounds(string series)
         {
             var events = new DirectoryInfo(SeriesRootPath + @"\" + series).GetFiles("*.csv");
 
-            var rounds = new List<Round>();
+            var rounds = new List<PlayerRound>();
 
             foreach (var ev in events)
             {
@@ -60,7 +60,7 @@ namespace ResultManager.Respository
                 {
                     var columns = lines[i].Split(Separator);
 
-                    rounds.Add(new Round
+                    rounds.Add(new PlayerRound
                     {
                         RoundTime = roundDate,
                         EventName = ev.Name.Substring(0, ev.Name.Length - 4),
@@ -79,7 +79,7 @@ namespace ResultManager.Respository
             return rounds;
         }
 
-        public Dictionary<string, Player> GetPlayers(IList<Round> rounds)
+        public Dictionary<string, Player> GetPlayers(IList<PlayerRound> rounds)
         {
             var d = new Dictionary<string, Player>();
 

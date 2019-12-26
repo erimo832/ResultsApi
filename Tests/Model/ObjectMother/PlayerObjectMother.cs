@@ -14,7 +14,7 @@ namespace Tests.Model.ObjectMother
                 FirstName = "John",
                 LastName = "Smith",
                 PDGANumber = null,
-                Rounds = new List<Round>()
+                Rounds = new List<PlayerRound>()
             };
         }
     }

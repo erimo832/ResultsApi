@@ -20,19 +20,16 @@ namespace ResultApi.Controllers
         [HttpGet]
         public IEnumerable<Player> Get()
         {
-            var series =  roundRespository.GetSeries();
-            var rounds = roundRespository.GetRounds(series[0]);
+            var rounds = roundRespository.GetRounds();
             var players = roundRespository.GetPlayers(rounds);
-
-
+            
             return players.Select(x => x.Value).ToArray();
         }
                 
         [HttpGet("{name}")]
         public IEnumerable<Player> Get(string name)
         {
-            var series = roundRespository.GetSeries();
-            var rounds = roundRespository.GetRounds(series[0]);
+            var rounds = roundRespository.GetRounds();
             var players = roundRespository.GetPlayers(rounds);
 
 
@@ -41,9 +38,8 @@ namespace ResultApi.Controllers
 
         [HttpGet("{name}/currentHcp")]
         public double CurrentHcp(string name)
-        {
-            var series = roundRespository.GetSeries();
-            var rounds = roundRespository.GetRounds(series[0]);
+        {            
+            var rounds = roundRespository.GetRounds();
             var players = roundRespository.GetPlayers(rounds);
 
 

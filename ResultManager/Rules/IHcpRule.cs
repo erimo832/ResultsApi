@@ -7,7 +7,8 @@ namespace ResultManager.Rules
 {
     public interface IHcpRule
     {
-        double CalculateAvgScore(List<Round> rounds);
+        double CalculateAvgScore(List<PlayerRound> rounds);
         double CalculateHcp(double avgScore);
+        double CalculateHcp(List<PlayerRound> rounds);
     }
 }

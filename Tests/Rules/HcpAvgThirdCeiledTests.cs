@@ -20,7 +20,7 @@ namespace Tests.Rules
         [Test]
         public void Rules_HcpAvgThirdCeiled_Should_CalculateAvgScore_NoRounds()
         {
-            var rounds = new List<Round>();
+            var rounds = new List<PlayerRound>();
 
             var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
 

@@ -15,6 +15,6 @@ namespace ResultManager.Model
         public int BestScore => Rounds.Min(x => x.Score);
         public int NumberOfRounds => Rounds.Count();
 
-        public List<Round> Rounds { get; set; } = new List<Round>();
+        public List<PlayerRound> Rounds { get; set; } = new List<PlayerRound>();
     }
 }
