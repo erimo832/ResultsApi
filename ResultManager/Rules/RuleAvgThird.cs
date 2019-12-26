@@ -30,15 +30,15 @@ namespace ResultManager.Rules
             return topThirdRounds.OrderBy(x => x.Score).Take(takeCnt).Sum(x => x.Score) / Convert.ToDouble(takeCnt);
         }
 
-        /// <summary>
-        /// Handikappet räknas ut genom att ta samtliga spelarens rundor under senaste året, 
-        /// räkna ut ett medelvärde av bästa tredjedelen. Man drar sedan bort 48 kast, multiplicerar med 0.8 och avrundar nedåt
-        /// </summary>
-        /// <param name="rounds"></param>
-        /// <returns></returns>
+        public double CalculateHcp(List<Round> rounds)        
+        {
+            return CalculateHcp(CalculateAvgScore(rounds));
+        }
+
+
         public double CalculateHcp(double avgScore)
         {
-            //First round so no hcp
+            //First round, so no hcp
             if (avgScore == 0)
                 return 0.0;
 

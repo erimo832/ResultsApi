@@ -10,7 +10,7 @@ namespace ResultManager.Respository
     public class RoundRespository : IRoundRespository
     {
         //private string SeriesRootPath => Directory.GetCurrentDirectory() + @"\series";
-        private string SeriesRootPath => @"C:\discgolf\series";
+        private string SeriesRootPath => @"M:\www\discgolf\series";
         private const char Separator = ',';
 
         private const int Col_DivCode = 0;
