@@ -36,8 +36,41 @@ namespace ResultApi.Controllers
             return players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).ToArray();
         }
 
+        [HttpGet("currentHcp")]
+        public IEnumerable<PlayerHcp> CurrentHcp()
+        {
+            var rounds = roundRespository.GetRounds();
+            var players = roundRespository.GetPlayers(rounds);
+
+
+            //var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).FirstOrDefault();
+
+            if (players != null)
+            {
+                var result = new List<PlayerHcp>();
+                var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
+
+                foreach (var player in players)
+                {
+                    result.Add(new PlayerHcp
+                    {
+                        FullName = player.Value.FullName,
+                        Hcp = rule.CalculateHcp(player.Value.Rounds)
+                    });
+                }
+
+
+                return result.OrderBy(x => x.Hcp);
+            }
+            else
+            {
+                Response.StatusCode = 404;
+                return new List<PlayerHcp>();
+            }
+        }
+
         [HttpGet("{name}/currentHcp")]
-        public double CurrentHcp(string name)
+        public PlayerHcp CurrentHcp(string name)
         {            
             var rounds = roundRespository.GetRounds();
             var players = roundRespository.GetPlayers(rounds);
@@ -49,12 +82,16 @@ namespace ResultApi.Controllers
             {
                 var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
 
-                return rule.CalculateHcp(player.Rounds);
+                return new PlayerHcp
+                {
+                    FullName = player.FullName,
+                    Hcp = rule.CalculateHcp(player.Rounds)
+            };
             }
             else
             {
                 Response.StatusCode = 404;
-                return 0.0;
+                return null;
             }
         }
     }
