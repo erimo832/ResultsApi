@@ -5,14 +5,14 @@ export class Results extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { rounds: [], loading: true };
   }
 
   componentDidMount() {
     this.populateResultData();
   }
 
-  static renderForecastsTable(forecasts) {
+  static renderRoundsTable(rounds) {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
@@ -22,10 +22,10 @@ export class Results extends Component {
           </tr>
         </thead>
         <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.eventName}>
-                <td>{forecast.eventName}</td>
-                <td>{forecast.roundTime}</td>
+          {rounds.map(round =>
+            <tr key={round.eventName}>
+                <td>{round.eventName}</td>
+                <td>{round.roundTime}</td>
               
             </tr>
           )}
@@ -37,7 +37,8 @@ export class Results extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : Results.renderForecastsTable(this.state.forecasts);
+      : Results.renderRoundsTable(this.state.rounds);
+     
 
     return (
       <div>
@@ -51,6 +52,6 @@ export class Results extends Component {
   async populateResultData() {
     const response = await fetch('http://ceptor.myftp.org:8088/api/Rounds');
     const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+    this.setState({ rounds: data, loading: false });
   }
 }
