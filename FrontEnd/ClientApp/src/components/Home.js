@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 export class Home extends Component {
-  static displayName = "Home.name";
+  static displayName = Home.name;
 
   render () {
     return (
       <div>
         <h1>orbiTibro discgolf scores</h1>
-        <p>bla bla bla</p>        
+        <p>This page is under construction and may change.</p>
       </div>
     );
   }
