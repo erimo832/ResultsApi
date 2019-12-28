@@ -7,6 +7,9 @@ namespace ResultManager.Managers
 {
     public interface ISeriesManager
     {
-        Round GetRound(string name);
+        Serie GetSerie(SerieInfo serie);
+        List<Serie> GetSeries();
+        List<SerieInfo> GetSerieInfos();
+        SerieInfo GetSerieInfo(string name);
     }
 }

@@ -8,7 +8,6 @@ namespace ResultManager.Model
     {
         public string EventName { get; set; }        
         public DateTime RoundTime { get; set; }
-        public List<PlayerResult> Results { get; set; } = new List<PlayerResult>();
-        
+        public List<PlayerResult> Results { get; set; } = new List<PlayerResult>();        
     }
 }

@@ -8,9 +8,7 @@ using System.Linq;
 namespace ResultManager.Respository
 {
     public class RoundRespository : IRoundRespository
-    {
-        //private string SeriesRootPath => Directory.GetCurrentDirectory() + @"\series";
-        private string SeriesRootPath => @"M:\www\discgolf\series";
+    {        
         private const char Separator = ',';
 
         private const int Col_DivCode = 0;
@@ -20,19 +18,11 @@ namespace ResultManager.Respository
         private const int Col_PdgaNumber = 4;
         private const int Col_Score = 5;
         private const int Col_Total = 6;
+                        
 
-
-        public IList<string> GetSeries()
-        {
-            var dir = new DirectoryInfo(SeriesRootPath);
-
-            return dir.GetDirectories().Select(x => x.Name).ToList();
-        }
-
-        public IList<string> GetRoundInformations()
-        {
-            var series = GetSeries();
-            var result = new List<string>();
+        public IList<RoundInfo> GetRoundInformations(IList<SerieInfo> series)
+        {            
+            var result = new List<RoundInfo>();
 
             foreach (var item in series)
             {
@@ -42,23 +32,27 @@ namespace ResultManager.Respository
             return result;
         }
 
-        public IList<string> GetRoundInformations(string serie)
+        public IList<RoundInfo> GetRoundInformations(SerieInfo serie)
         {
-            var result = new List<string>();
+            var result = new List<RoundInfo>();
 
-            var events = new DirectoryInfo(SeriesRootPath + @"\" + serie).GetFiles("*.csv");
+            var events = new DirectoryInfo(serie.SeriePath).GetFiles("*.csv");
 
             foreach (var ev in events)
             {
-                result.Add(ev.Name.Replace(".csv", ""));
+                result.Add(new RoundInfo
+                {
+                    RoundPath = ev.FullName,
+                    Name = GetRoundName(serie, ev.Name),
+                    RoundTime = DateTime.Parse(ev.Name.Substring(0, 10))
+                });
             }
 
             return result;
         }
 
-        public IList<PlayerRound> GetRounds()
-        {
-            var series = GetSeries();
+        public IList<PlayerRound> GetRounds(IList<SerieInfo> series)
+        {            
             var result = new List<PlayerRound>();
 
             foreach (var item in series)
@@ -69,18 +63,17 @@ namespace ResultManager.Respository
             return result;
         }
 
-        public IList<PlayerRound> GetRounds(string series)
+        public IList<PlayerRound> GetRounds(SerieInfo serie)
         {
-            var events = new DirectoryInfo(SeriesRootPath + @"\" + series).GetFiles("*.csv");
+            var events = GetRoundInformations(serie);
 
             var rounds = new List<PlayerRound>();
 
             foreach (var ev in events)
             {
-                var lines = File.ReadAllLines(ev.FullName);
-
-                //TODO: A better way to get time of round
-                var roundDate = DateTime.Parse(ev.Name.Substring(0, 10));
+                var lines = File.ReadAllLines(ev.RoundPath);
+                                
+                var roundDate = ev.RoundTime;
 
                 //Ignore header
                 for (int i = 1; i < lines.Length; i++)
@@ -98,7 +91,9 @@ namespace ResultManager.Respository
                         PDGANumber = columns[Col_PdgaNumber] == "" ? null : (long?)Convert.ToInt64(columns[Col_PdgaNumber]),
                         RoundNumber = 1, //Hard code to 1 for now
                         Score = Convert.ToInt32(columns[Col_Score]),
-                        Total = Convert.ToInt32(columns[Col_Total])
+                        Total = Convert.ToInt32(columns[Col_Total]),
+                        Series = serie.Name,
+                        RoundPath = ev.RoundPath
                     });
                 }
             }
@@ -128,6 +123,20 @@ namespace ResultManager.Respository
             }
 
             return d;
-        }        
+        }
+
+        public IList<PlayerRound> GetAllRounds()
+        {
+            //Should not really have a hidden ref to SeriesRepositoy from here
+            var seriesRepository = new SeriesRepository();
+
+            return GetRounds(seriesRepository.GetSerieInfos());
+        }
+
+
+        private string GetRoundName(SerieInfo serie, string filename)
+        {
+            return $"{filename.Remove(0, filename.LastIndexOf('_') + 1).Replace(".csv", "")} - {serie.Name}";
+        }
     }
 }

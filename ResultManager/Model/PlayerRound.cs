@@ -15,6 +15,8 @@ namespace ResultManager.Model
         public int Total { get; set; }
 
         public DateTime RoundTime { get; set; }
+        public string Series { get; set; }
+        public string RoundPath { get; set; }
 
         public string FullName => FirstName + " " + LastName;
     }

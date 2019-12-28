@@ -1,30 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ResultManager.Managers;
+using ResultManager.Model;
+using ResultManager.Points;
 using ResultManager.Respository;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ResultManager.Rules;
 
 namespace ResultApi.Controllers
 {
     [Route("api/[controller]")]
     public class SeriesController : Controller
     {
-        private IRoundRespository roundRespository = new RoundRespository();
+        private IRoundRespository roundRespository;
+        private ISeriesRepository seriesRepository;
+        private ISeriesManager seriesManager;
+        private IHcpRule hcpRule;
+        private IPointsCalulation pointCalculation;
+        private IRoundManager roundManager;
+
+        public SeriesController()
+        {
+            roundRespository = new RoundRespository();
+            hcpRule = new RuleAvgThirdCeiled();
+            pointCalculation = new PointsCalulation();
+            roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
+            seriesRepository = new SeriesRepository();
+
+            seriesManager = new SeriesManager(roundManager, seriesRepository);
+        }
 
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Serie> Get()
         {
-            
-            return roundRespository.GetSeries();
+            return seriesManager.GetSeries();
         }
 
-        //TODO:
-        // add post of new csv
-        // must att tornament date
+        [HttpGet("{name}")]
+        public Serie Get(string name)
+        {
+            var serieInfos = seriesManager.GetSerieInfos();
+            var serieInfo = serieInfos.FirstOrDefault(x => x.Name == name);
+            
+            if(serieInfo != null)
+                return seriesManager.GetSerie(serieInfo);
 
+            Response.StatusCode = 404;
+            return null;
+        }
     }
 }

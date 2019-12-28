@@ -4,11 +4,12 @@ using System.Collections.Generic;
 namespace ResultManager.Respository
 {
     public interface IRoundRespository
-    {
-        IList<string> GetSeries();
-        IList<string> GetRoundInformations();
-        IList<PlayerRound> GetRounds();
-        IList<PlayerRound> GetRounds(string series);
+    {        
+        IList<RoundInfo> GetRoundInformations(IList<SerieInfo> series);
+        IList<RoundInfo> GetRoundInformations(SerieInfo serie);
+        IList<PlayerRound> GetRounds(IList<SerieInfo> series);        
+        IList<PlayerRound> GetRounds(SerieInfo series);
+        IList<PlayerRound> GetAllRounds();
         Dictionary<string, Player> GetPlayers(IList<PlayerRound> rounds);
     }
 }

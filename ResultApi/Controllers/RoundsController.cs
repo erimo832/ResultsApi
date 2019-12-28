@@ -16,29 +16,34 @@ namespace ResultApi.Controllers
     public class RoundsController : Controller
     {
         private IRoundRespository roundRespository;
+        private ISeriesRepository seriesRepository;
         private ISeriesManager seriesManager;
         private IHcpRule hcpRule;
         private IPointsCalulation pointCalculation;
+        private IRoundManager roundManager;
 
         public RoundsController()
         {
             roundRespository = new RoundRespository();
+            seriesRepository = new SeriesRepository();
             hcpRule = new RuleAvgThirdCeiled();
             pointCalculation = new PointsCalulation();
-            seriesManager = new SeriesManager(roundRespository, hcpRule, pointCalculation);
+            roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
+            seriesManager = new SeriesManager(roundManager, seriesRepository);
         }
 
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<Round> Get()
-        {
+        {            
             var result = new List<Round>();
-
-            var events = roundRespository.GetRoundInformations();
+            var series = seriesRepository.GetSerieInfos();
+            
+            var events = roundRespository.GetRoundInformations(series);
 
             foreach (var ev in events)
             {
-                result.Add(seriesManager.GetRound(ev));
+                result.Add(roundManager.GetRound(ev));
             }
 
             return result;
@@ -47,7 +52,16 @@ namespace ResultApi.Controllers
         [HttpGet("{name}")]
         public Round Get(string name)
         {
-            return seriesManager.GetRound(name);
+            //TODO: Fix Bug
+            var serieInfos = seriesManager.GetSerieInfos();
+            var roundInfos = roundRespository.GetRoundInformations(serieInfos);
+            var roundInfo = roundInfos.FirstOrDefault(x => x.Name == name);
+
+            if(roundInfo != null)
+                return roundManager.GetRound(roundInfo);
+
+            Response.StatusCode = 404;
+            return null;
         }    
     }
 }

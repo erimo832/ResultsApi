@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ResultManager.Managers;
 using ResultManager.Model;
+using ResultManager.Points;
 using ResultManager.Respository;
 using ResultManager.Rules;
 
@@ -14,36 +14,61 @@ namespace ResultApi.Controllers
     [Route("api/[controller]")]
     public class PlayersController : Controller
     {
-        private IRoundRespository roundRespository = new RoundRespository();
+        private IRoundRespository roundRespository;
+        private ISeriesRepository seriesRepository;
+        private ISeriesManager seriesManager;
+        private IHcpRule hcpRule;
+        private IPointsCalulation pointCalculation;
+        private IRoundManager roundManager;
+
+        public PlayersController()
+        {
+            roundRespository = new RoundRespository();
+            seriesRepository = new SeriesRepository();
+            hcpRule = new RuleAvgThirdCeiled();
+            pointCalculation = new PointsCalulation();
+            roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
+            seriesManager = new SeriesManager(roundManager, seriesRepository);
+        }
 
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<Player> Get()
         {
-            var rounds = roundRespository.GetRounds();
+            var serieInfos = seriesManager.GetSerieInfos();
+            var rounds = roundRespository.GetRounds(serieInfos);
             var players = roundRespository.GetPlayers(rounds);
             
-            return players.Select(x => x.Value).ToArray();
+            if(players.Count > 0)
+                return players.Select(x => x.Value).ToArray();
+
+            Response.StatusCode = 404;
+            return new List<Player>();
         }
                 
         [HttpGet("{name}")]
         public IEnumerable<Player> Get(string name)
         {
-            var rounds = roundRespository.GetRounds();
+            var serieInfos = seriesManager.GetSerieInfos();
+            var rounds = roundRespository.GetRounds(serieInfos);            
             var players = roundRespository.GetPlayers(rounds);
 
+            var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).ToArray();
 
-            return players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).ToArray();
+            if (player != null && player.Length > 0)
+                return player;
+
+            Response.StatusCode = 404;
+            return new List<Player>();
         }
 
         [HttpGet("currentHcp")]
         public IEnumerable<PlayerHcp> CurrentHcp()
         {
-            var rounds = roundRespository.GetRounds();
+            var serieInfos = seriesManager.GetSerieInfos();
+            var rounds = roundRespository.GetRounds(serieInfos);
             var players = roundRespository.GetPlayers(rounds);
 
-
-            //var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).FirstOrDefault();
 
             if (players != null)
             {
@@ -62,17 +87,16 @@ namespace ResultApi.Controllers
 
                 return result.OrderBy(x => x.Hcp);
             }
-            else
-            {
-                Response.StatusCode = 404;
-                return new List<PlayerHcp>();
-            }
+            
+            Response.StatusCode = 404;
+            return new List<PlayerHcp>();
         }
 
         [HttpGet("{name}/currentHcp")]
         public PlayerHcp CurrentHcp(string name)
-        {            
-            var rounds = roundRespository.GetRounds();
+        {
+            var serieInfos = seriesManager.GetSerieInfos();
+            var rounds = roundRespository.GetRounds(serieInfos);
             var players = roundRespository.GetPlayers(rounds);
 
 
@@ -86,13 +110,11 @@ namespace ResultApi.Controllers
                 {
                     FullName = player.FullName,
                     Hcp = rule.CalculateHcp(player.Rounds)
-            };
+                };
             }
-            else
-            {
-                Response.StatusCode = 404;
-                return null;
-            }
+                
+            Response.StatusCode = 404;
+            return null;
         }
     }
 }
