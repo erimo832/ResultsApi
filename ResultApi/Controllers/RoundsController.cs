@@ -46,7 +46,7 @@ namespace ResultApi.Controllers
                 result.Add(roundManager.GetRound(ev));
             }
 
-            return result;
+            return result.OrderByDescending(x => x.RoundTime);
         }
 
         [HttpGet("{name}")]
