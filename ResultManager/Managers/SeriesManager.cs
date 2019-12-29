@@ -22,7 +22,8 @@ namespace ResultManager.Managers
             return new Serie
             {
                 Name = serie.Name,
-                Rounds = _roundManager.GetRounds(serie)
+                Rounds = _roundManager.GetRounds(serie),
+                Settings = _seriesRepository.GetSettings(serie)
             };
         }
         
@@ -36,7 +37,8 @@ namespace ResultManager.Managers
                 result.Add(new Serie
                 {
                     Name = item.Name,
-                    Rounds = _roundManager.GetRounds(item)
+                    Rounds = _roundManager.GetRounds(item),
+                    Settings = _seriesRepository.GetSettings(item)
                 });
             }
 

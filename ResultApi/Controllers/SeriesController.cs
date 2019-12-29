@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using ResultApi.ViewModel;
 using ResultManager.Managers;
 using ResultManager.Model;
 using ResultManager.Points;
@@ -18,7 +19,8 @@ namespace ResultApi.Controllers
         private IHcpRule hcpRule;
         private IPointsCalulation pointCalculation;
         private IRoundManager roundManager;
-
+        private ILeaderboardManager leaderboardManager;
+        
         public SeriesController()
         {
             roundRespository = new RoundRespository();
@@ -28,6 +30,7 @@ namespace ResultApi.Controllers
             seriesRepository = new SeriesRepository();
 
             seriesManager = new SeriesManager(roundManager, seriesRepository);
+            leaderboardManager = new LeaderboardManager();
         }
 
         // GET: api/<controller>
@@ -48,6 +51,25 @@ namespace ResultApi.Controllers
 
             Response.StatusCode = 404;
             return null;
+        }
+
+        [HttpGet("hcpLeaderbords")]
+        public IEnumerable<HcpScoreLeaderboard> GetHcpLeaderboards()
+        {
+            var result = new List<HcpScoreLeaderboard>();
+            var series = seriesManager.GetSeries();
+
+            foreach (var serie in series)
+            {
+                result.Add(new HcpScoreLeaderboard 
+                { 
+                    SerieName = serie.Name,
+                    Placements = leaderboardManager.GetHcpLeaderboard(serie).ToList()
+                });
+            }
+
+            return result;
+
         }
     }
 }

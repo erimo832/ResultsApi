@@ -9,5 +9,7 @@ namespace ResultManager.Respository
     {
         IList<SerieInfo> GetSerieInfos();
         SerieInfo GetSerieInfo(string name);
+
+        SeriesSetting GetSettings(SerieInfo serieInfo);
     }
 }

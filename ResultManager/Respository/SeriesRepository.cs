@@ -1,4 +1,5 @@
-﻿using ResultManager.Model;
+﻿using Newtonsoft.Json;
+using ResultManager.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,6 +36,13 @@ namespace ResultManager.Respository
             }
 
             throw new Exception($"Serie with name {name} not found");
+        }
+
+        public SeriesSetting GetSettings(SerieInfo serieInfo)
+        {
+            var file = File.ReadAllText(serieInfo.SeriePath + @"\settings.json");
+
+            return JsonConvert.DeserializeObject<SeriesSetting>(file);
         }
     }
 }
