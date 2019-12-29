@@ -33,9 +33,9 @@ export class Series extends Component {
         <Panel header={`${series[i].serieName}`} key={key}>
           <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
-            <tr>
-              <th>Name</th>
+            <tr>              
               <th>Place</th>
+              <th>Name</th>
               <th>TotalPoints</th>
               <th>AvgPoints</th>
               <th>TotalHcpScore</th>              
@@ -46,8 +46,8 @@ export class Series extends Component {
           <tbody>
             {series[i].placements.map(player =>
               <tr key={player.fullName}>
-                  <td>{player.fullName}</td>
                   <td>{player.place}</td>
+                  <td>{player.fullName}</td>                  
                   <td>{player.totalPoints}</td>                  
                   <td>{player.avgPoints}</td>
                   <td>{player.totalHcpScore}</td>                  

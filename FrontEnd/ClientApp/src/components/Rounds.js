@@ -34,8 +34,8 @@ export class Rounds extends Component {
           <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>
-              <th>Name</th>
               <th>Place</th>
+              <th>Name</th>              
               <th>Points</th>
               <th>Hcp</th>
               <th>Score</th>              
@@ -45,8 +45,8 @@ export class Rounds extends Component {
           <tbody>
             {rounds[i].results.map(player =>
               <tr key={player.fullName}>
-                  <td>{player.fullName}</td>
                   <td>{player.place}</td>
+                  <td>{player.fullName}</td>                  
                   <td>{player.points}</td>                  
                   <td>{player.hcp}</td>
                   <td>{player.score}</td>                  
