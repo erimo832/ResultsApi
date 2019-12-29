@@ -1,6 +1,5 @@
 import 'rc-collapse/assets/index.css';
 import React, { Component } from 'react';
-import Collapse, { Panel } from 'rc-collapse';
 
 export class Hcp extends Component {
   static displayName = Hcp.name;

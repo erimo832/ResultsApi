@@ -7,14 +7,14 @@ export class Series extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { rounds: [], loading: true };
+    this.state = { series: [], loading: true };
   }
 
   componentDidMount() {
     this.populateResultData();
   }
 
-  static renderRoundsTable(series) {
+  static renderSeriesTable(series) {
     return (<div>           
       <Collapse
         accordion={false}
@@ -30,27 +30,29 @@ export class Series extends Component {
     for (let i = 0, len = series.length; i < len; i++) {
       const key = i + 1;
       items.push(
-        <Panel header={`${series[i].name}`} key={key}>
+        <Panel header={`${series[i].serieName}`} key={key}>
           <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>
               <th>Name</th>
               <th>Place</th>
-              <th>Points</th>
-              <th>Hcp</th>
-              <th>Score</th>              
-              <th>HcpScore</th>
+              <th>TotalPoints</th>
+              <th>AvgPoints</th>
+              <th>TotalHcpScore</th>              
+              <th>AvgHcpScore</th> 
+              <th>NumberOfRounds</th>
             </tr>
           </thead>
           <tbody>
-            {series[i].results.map(player =>
+            {series[i].placements.map(player =>
               <tr key={player.fullName}>
                   <td>{player.fullName}</td>
                   <td>{player.place}</td>
-                  <td>{player.points}</td>                  
-                  <td>{player.hcp}</td>
-                  <td>{player.score}</td>                  
-                  <td>{player.hcpScore}</td>
+                  <td>{player.totalPoints}</td>                  
+                  <td>{player.avgPoints}</td>
+                  <td>{player.totalHcpScore}</td>                  
+                  <td>{player.avgHcpScore}</td>
+                  <td>{player.numberOfRounds}</td>
               </tr>
             )}
           </tbody>
@@ -64,7 +66,7 @@ export class Series extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : Series.renderRoundsTable(this.state.series);
+      : Series.renderSeriesTable(this.state.series);
      
     return (
       <div>
@@ -76,7 +78,7 @@ export class Series extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch('http://ceptor.myftp.org:8088/​api​/Series​/hcpLeaderbords');
+    const response = await fetch('http://ceptor.myftp.org:8088/api/Series/hcpLeaderbords');
     const data = await response.json();
     this.setState({ series: data, loading: false });
   }
