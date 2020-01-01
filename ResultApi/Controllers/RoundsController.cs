@@ -26,7 +26,7 @@ namespace ResultApi.Controllers
         {
             roundRespository = new RoundRespository();
             seriesRepository = new SeriesRepository();
-            hcpRule = new RuleAvgThirdCeiled();
+            hcpRule = new RuleAvgThirdCeiled();            
             pointCalculation = new PointsCalulation();
             roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
             seriesManager = new SeriesManager(roundManager, seriesRepository);

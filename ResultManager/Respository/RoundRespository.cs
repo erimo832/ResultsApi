@@ -83,7 +83,7 @@ namespace ResultManager.Respository
                     rounds.Add(new PlayerRound
                     {
                         RoundTime = roundDate,
-                        EventName = ev.Name.Substring(0, ev.Name.Length - 4),
+                        EventName = ev.Name,
                         DivCode = columns[Col_DivCode].Replace("=", "").Replace("\"", ""),
                         Place = Convert.ToInt32(columns[Col_Place]),
                         FirstName = columns[Col_FirstName].Replace("=", "").Replace("\"", ""),
@@ -114,7 +114,6 @@ namespace ResultManager.Respository
                         FirstName = item.FirstName,
                         LastName = item.LastName,
                         PDGANumber = item.PDGANumber
-
                     });
                 }
 
