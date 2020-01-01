@@ -1,4 +1,5 @@
 import 'rc-collapse/assets/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
 
@@ -36,10 +37,10 @@ export class Rounds extends Component {
             <tr>
               <th>Place</th>
               <th>Name</th>              
-              <th>Points</th>
-              <th>Hcp</th>
-              <th>Score</th>              
-              <th>HcpScore</th>
+              <th>Points</th>              
+              <th className="d-none d-sm-table-cell">Score</th>
+              <th className="d-none d-sm-table-cell">Hcp</th>
+              <th className="d-none d-sm-table-cell">HcpScore</th>
             </tr>
           </thead>
           <tbody>
@@ -47,10 +48,10 @@ export class Rounds extends Component {
               <tr key={player.fullName}>
                   <td>{player.place}</td>
                   <td>{player.fullName}</td>                  
-                  <td>{player.points}</td>                  
-                  <td>{player.hcp}</td>
-                  <td>{player.score}</td>                  
-                  <td>{player.hcpScore}</td>
+                  <td>{player.points}</td>
+                  <td className="d-none d-sm-table-cell">{player.score}</td>
+                  <td className="d-none d-sm-table-cell">{player.hcp}</td>                  
+                  <td className="d-none d-sm-table-cell">{player.hcpScore}</td>
               </tr>
             )}
           </tbody>

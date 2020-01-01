@@ -1,4 +1,4 @@
-import 'rc-collapse/assets/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 
 export class Hcp extends Component {

@@ -1,6 +1,8 @@
 import 'rc-collapse/assets/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
+import {Container, Row, Col } from 'react-bootstrap'
 
 export class Series extends Component {
   static displayName = Series.name;
@@ -30,33 +32,40 @@ export class Series extends Component {
     for (let i = 0, len = series.length; i < len; i++) {
       const key = i + 1;
       items.push(
-        <Panel header={`${series[i].serieName}`} key={key}>
-          <table className='table table-striped' aria-labelledby="tabelLabel">
-          <thead>
-            <tr>              
-              <th>Place</th>
-              <th>Name</th>
-              <th>TotalPoints</th>
-              <th>AvgPoints</th>
-              <th>TotalHcpScore</th>              
-              <th>AvgHcpScore</th> 
-              <th>NumberOfRounds</th>
-            </tr>
-          </thead>
-          <tbody>
-            {series[i].placements.map(player =>
-              <tr key={player.fullName}>
-                  <td>{player.place}</td>
-                  <td>{player.fullName}</td>                  
-                  <td>{player.totalPoints}</td>                  
-                  <td>{player.avgPoints}</td>
-                  <td>{player.totalHcpScore}</td>                  
-                  <td>{player.avgHcpScore}</td>
-                  <td>{player.numberOfRounds}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <Panel header={`${series[i].serieName}`} key={key}>          
+          <Container>
+            <Row>
+              <Col sm={12} lg={12}>
+                <table className='table table-striped' aria-labelledby="tabelLabel">
+                  <thead>
+                    <tr>              
+                      <th>Place</th>
+                      <th>Name</th>
+                      <th>TotalPoints</th>
+                      <th className="d-none d-md-table-cell">AvgPoints</th>                                
+                      <th className="d-none d-sm-table-cell">AvgHcpScore</th> 
+                      <th className="d-none d-md-table-cell">TotalHcpScore</th>
+                      <th className="d-none d-lg-table-cell">NumberOfRounds</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {series[i].placements.map(player =>
+                      <tr key={player.fullName}>
+                          <td>{player.place}</td>
+                          <td>{player.fullName}</td>                  
+                          <td>{player.totalPoints}</td>                  
+                          <td className="d-none d-md-table-cell">{player.avgPoints}</td>                          
+                          <td className="d-none d-sm-table-cell">{player.avgHcpScore}</td>
+                          <td className="d-none d-md-table-cell">{player.totalHcpScore}</td>                  
+                          <td className="d-none d-lg-table-cell">{player.numberOfRounds}</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </Col>              
+            </Row>
+            
+        </Container>
         </Panel>
       );
     }
