@@ -2,6 +2,7 @@ import 'rc-collapse/assets/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
+import i18n from "../i18n";
 
 export class Rounds extends Component {
   static displayName = Rounds.name;
@@ -64,13 +65,13 @@ export class Rounds extends Component {
 
   render() {
     let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
+      ? <p><em>{i18n.t('common_loading')}</em></p>
       : Rounds.renderRoundsTable(this.state.rounds);
      
     return (
       <div>
-        <h1 id="tabelLabel">Rounds</h1>
-        <p>Some info</p>
+        <h1 id="tabelLabel">{i18n.t('rounds_header')}</h1>
+        <p>{i18n.t('rounds_description')}</p>
         {contents}
       </div>
     );

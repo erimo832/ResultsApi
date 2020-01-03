@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import i18n from "../i18n";
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -6,9 +7,11 @@ export class Home extends Component {
   render () {
     return (
       <div>
-        <h1>orbiTibro discgolf scores</h1>
-        <p>This page is under construction and may change.</p>
+        <h1>{i18n.t('home_header')}</h1>
+        <p>{i18n.t('home_description')}</p>
       </div>
     );
   }
 }
+
+//export default hoistStatics(withTranslation()(Home), Home);

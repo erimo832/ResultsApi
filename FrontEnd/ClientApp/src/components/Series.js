@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
 import {Container, Row, Col } from 'react-bootstrap'
+import i18n from "../i18n";
 
 export class Series extends Component {
   static displayName = Series.name;
@@ -74,13 +75,13 @@ export class Series extends Component {
 
   render() {
     let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
+      ? <p><em>{i18n.t('common_loading')}</em></p>
       : Series.renderSeriesTable(this.state.series);
      
     return (
       <div>
-        <h1 id="tabelLabel">Series</h1>
-        <p>Some info</p>
+        <h1 id="tabelLabel">{i18n.t('series_header')}</h1>
+        <p>{i18n.t('series_description')}</p>
         {contents}
       </div>
     );

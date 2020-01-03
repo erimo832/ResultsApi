@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
+import i18n from "../i18n";
 
 export class Hcp extends Component {
   static displayName = Hcp.name;
@@ -35,15 +36,16 @@ export class Hcp extends Component {
     );
   }
 
-  render() {
+  render() {    
     let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
+      ? <p><em>{i18n.t('common_loading')}</em></p>
       : Hcp.renderHcpTable(this.state.hcp);
      
     return (
       <div>
-        <h1 id="tabelLabel">Current Hcp</h1>
-        <p>Some info how hcp is calculated</p>
+        <h1 id="tabelLabel">{i18n.t('hcp_header')}</h1>
+        <p>{i18n.t('hcp_description_avgscore')}</p>
+        <p>{i18n.t('hcp_description_hcp')}</p>
         {contents}
       </div>
     );
