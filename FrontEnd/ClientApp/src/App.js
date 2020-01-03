@@ -7,13 +7,8 @@ import { Rounds } from './components/Rounds';
 import { Series } from './components/Series';
 import './custom.css'
 
-import { withTranslation } from 'react-i18next';
-import hoistStatics from 'hoist-non-react-statics';
-
-
-//export default class App extends Component {
-class App extends Component {
-  //static displayName = App.name;
+export default class App extends Component {
+  static displayName = App.name;
   
   render () {    
     const { t } = this.props;
@@ -27,5 +22,3 @@ class App extends Component {
     );
   }
 }
-
-export default hoistStatics(withTranslation()(App), App); 

@@ -1,33 +1,7 @@
-/*import { createI18n } from 'react-router-i18n';
-
-// Array of supported locales
-// The first in the array is treated as the default locale
-const locales = ['en', 'sv'];
-
-// Dictionary of translations
-const translations = {
-  en: {
-    hello: 'Hello',
-  },
-  fr: {
-    hello: 'Bonjour',
-  }
-}
-
-const I18n = createI18n(
-  locales,
-  translations,
-);
-
-export default I18n;
-*/
-
-
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-// the translations
-// (tip move them in a JSON file and import them)
+// TODO: Move translations it its own json files
 const resources = {
   en: {
     translation: {                  
