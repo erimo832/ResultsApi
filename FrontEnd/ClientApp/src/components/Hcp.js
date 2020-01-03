@@ -19,8 +19,8 @@ export class Hcp extends Component {
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Hcp</th>
+            <th>{i18n.t('column_name')}</th>
+            <th>{i18n.t('column_hcp')}</th>
           </tr>
         </thead>
         <tbody>

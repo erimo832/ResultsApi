@@ -40,13 +40,13 @@ export class Series extends Component {
                 <table className='table table-striped' aria-labelledby="tabelLabel">
                   <thead>
                     <tr>              
-                      <th>Place</th>
-                      <th>Name</th>
-                      <th>TotalPoints</th>
-                      <th className="d-none d-md-table-cell">AvgPoints</th>                                
-                      <th className="d-none d-sm-table-cell">AvgHcpScore</th> 
-                      <th className="d-none d-md-table-cell">TotalHcpScore</th>
-                      <th className="d-none d-lg-table-cell">NumberOfRounds</th>
+                      <th>{i18n.t('column_place')}</th>
+                      <th>{i18n.t('column_name')}</th>
+                      <th>{i18n.t('column_totalpoints')}</th>
+                      <th className="d-none d-md-table-cell">{i18n.t('column_avgpoints')}</th>                                
+                      <th className="d-none d-sm-table-cell">{i18n.t('column_avghcpscore')}</th> 
+                      <th className="d-none d-md-table-cell">{i18n.t('column_totalhcpscore')}</th>
+                      <th className="d-none d-lg-table-cell">{i18n.t('column_rounds')}</th>
                     </tr>
                   </thead>
                   <tbody>

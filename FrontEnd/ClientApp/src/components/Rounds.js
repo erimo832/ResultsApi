@@ -36,12 +36,12 @@ export class Rounds extends Component {
           <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>
-              <th>Place</th>
-              <th>Name</th>              
-              <th>Points</th>              
-              <th className="d-none d-sm-table-cell">Score</th>
-              <th className="d-none d-sm-table-cell">Hcp</th>
-              <th className="d-none d-sm-table-cell">HcpScore</th>
+              <th>{i18n.t('column_place')}</th>
+              <th>{i18n.t('column_name')}</th>              
+              <th>{i18n.t('column_points')}</th>              
+              <th className="d-none d-sm-table-cell">{i18n.t('column_score')}</th>
+              <th className="d-none d-sm-table-cell">{i18n.t('column_hcp')}</th>
+              <th className="d-none d-sm-table-cell">{i18n.t('column_hcpscore')}</th>
             </tr>
           </thead>
           <tbody>
