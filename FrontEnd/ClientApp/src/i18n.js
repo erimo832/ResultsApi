@@ -31,6 +31,7 @@ const resources = {
       "rounds_description": "The lastest rounds with results.",
       "series_header": "Series",
       "series_description": "Series with results.",
+      "series_basednumrounds": "Based on the{{cnt}} best point rounds for each players.",
     }
   },
   sv: {
@@ -61,6 +62,7 @@ const resources = {
       "rounds_description": "Senaste rundorna med resultat.",
       "series_header": "Serier",
       "series_description": "Serier med results.",
+      "series_basednumrounds": "Summeras på de {{cnt}} bästa poängrundorna för varje spelare.",
     }
   }
 };

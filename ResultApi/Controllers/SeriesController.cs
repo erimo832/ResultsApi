@@ -64,6 +64,7 @@ namespace ResultApi.Controllers
                 result.Add(new HcpScoreLeaderboard 
                 { 
                     SerieName = serie.Name,
+                    RoundsToCount = serie.Settings.RoundsToCount,
                     Placements = leaderboardManager.GetHcpLeaderboard(serie).ToList()
                 });
             }

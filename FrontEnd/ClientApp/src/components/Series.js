@@ -36,7 +36,12 @@ export class Series extends Component {
         <Panel header={`${series[i].serieName}`} key={key}>          
           <Container>
             <Row>
-              <Col sm={12} lg={12}>
+               <Col sm={12} lg={12}>
+                   <div>{i18n.t('series_basednumrounds', {cnt: series[i].roundsToCount } )}</div>
+               </Col>
+            </Row>
+            <Row>            
+              <Col sm={12} lg={12}>                
                 <table className='table table-striped' aria-labelledby="tabelLabel">
                   <thead>
                     <tr>              
