@@ -27,7 +27,8 @@ export class NavMenu extends Component {
       <header>        
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-            <NavbarBrand tag={Link} to="/">orbiTibro              
+            <NavbarBrand>
+                <NavLink className="text-dark" href="http://www.orbitibro.se/">orbiTibro</NavLink>
             </NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
