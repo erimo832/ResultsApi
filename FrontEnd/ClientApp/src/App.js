@@ -5,7 +5,7 @@ import { Home } from './components/Home';
 import { Hcp } from './components/Hcp';
 import { Rounds } from './components/Rounds';
 import { Series } from './components/Series';
-import './custom.css'
+import './custom.css';
 
 export default class App extends Component {
   static displayName = App.name;

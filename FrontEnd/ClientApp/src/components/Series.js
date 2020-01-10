@@ -48,9 +48,11 @@ export class Series extends Component {
                       <th>{i18n.t('column_place')}</th>
                       <th>{i18n.t('column_name')}</th>
                       <th>{i18n.t('column_totalpoints')}</th>
-                      <th className="d-none d-md-table-cell">{i18n.t('column_avgpoints')}</th>                                
-                      <th className="d-none d-sm-table-cell">{i18n.t('column_avghcpscore')}</th> 
-                      <th className="d-none d-md-table-cell">{i18n.t('column_totalhcpscore')}</th>
+                      <th className="d-none d-lg-table-cell">{i18n.t('column_avgpoints')}</th>                                
+                      <th className="d-none d-md-table-cell">{i18n.t('column_avghcpscore')}</th> 
+                      <th className="d-none d-lg-table-cell">{i18n.t('column_totalhcpscore')}</th>
+                      <th className="d-none d-sm-table-cell">{i18n.t('column_maxpoints')}</th>
+                      <th className="d-none d-sm-table-cell">{i18n.t('column_minpoints')}</th>
                       <th className="d-none d-lg-table-cell">{i18n.t('column_rounds')}</th>
                     </tr>
                   </thead>
@@ -60,9 +62,11 @@ export class Series extends Component {
                           <td>{player.place}</td>
                           <td>{player.fullName}</td>                  
                           <td>{player.totalPoints}</td>                  
-                          <td className="d-none d-md-table-cell">{player.avgPoints}</td>                          
-                          <td className="d-none d-sm-table-cell">{player.avgHcpScore}</td>
-                          <td className="d-none d-md-table-cell">{player.totalHcpScore}</td>                  
+                          <td className="d-none d-lg-table-cell">{player.avgPoints}</td>                          
+                          <td className="d-none d-md-table-cell">{player.avgHcpScore}</td>
+                          <td className="d-none d-lg-table-cell">{player.totalHcpScore}</td>                  
+                          <td className="d-none d-sm-table-cell">{player.topResults[0].points}</td>
+                          <td className="d-none d-sm-table-cell">{player.topResults[player.topResults.length - 1].points}</td>
                           <td className="d-none d-lg-table-cell">{player.numberOfRounds}</td>
                       </tr>
                     )}
@@ -93,7 +97,7 @@ export class Series extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch('http://ceptor.myftp.org:8088/api/Series/hcpLeaderbords');
+    const response = await fetch('http://orbitibro.ddns.net:8088/api/Series/hcpLeaderbords');
     const data = await response.json();
     this.setState({ series: data, loading: false });
   }

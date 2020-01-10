@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import i18n from "../i18n";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -13,5 +14,3 @@ export class Home extends Component {
     );
   }
 }
-
-//export default hoistStatics(withTranslation()(Home), Home);

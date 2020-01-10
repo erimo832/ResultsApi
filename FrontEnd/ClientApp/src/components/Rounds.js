@@ -78,7 +78,7 @@ export class Rounds extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch('http://ceptor.myftp.org:8088/api/Rounds');
+    const response = await fetch('http://orbitibro.ddns.net:8088/api/Rounds');
     const data = await response.json();
     this.setState({ rounds: data, loading: false });
   }

@@ -52,7 +52,7 @@ export class Hcp extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch('http://ceptor.myftp.org:8088/api/Players/currentHcp');
+    const response = await fetch('http://orbitibro.ddns.net:8088/api/Players/currentHcp');
     const data = await response.json();
     this.setState({ hcp: data, loading: false });
   }
