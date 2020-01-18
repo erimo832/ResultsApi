@@ -10,7 +10,6 @@ namespace ResultManager.Managers
     {
         public IList<HcpScorePlacement> GetHcpLeaderboard(Serie serie)
         {
-            //TODO: Only take top x scores
             var result = new List<HcpScorePlacement>();
 
             List<string> players = new List<string>();
@@ -55,6 +54,60 @@ namespace ResultManager.Managers
                     result[i].Place = i + 1;
                     lastPlace = i + 1;
                     lastTotalPoints = result[i].TotalPoints;
+                }
+            }
+
+            return result;
+        }
+
+        public IList<ScorePlacement> GetScoreLeaderboard(Serie serie)
+        {
+            //TODO: Only take top x scores
+            var result = new List<ScorePlacement>();
+
+            List<string> players = new List<string>();
+            List<PlayerResult> allResults = new List<PlayerResult>();
+
+            serie.Rounds.ForEach(x =>
+                allResults.AddRange(x.Results)
+            );
+
+            players = allResults.Select(x => x.FullName).Distinct().ToList();
+
+            foreach (var player in players)
+            {
+                var rounds = allResults.Where(z => z.FullName == player).OrderBy(x => x.Score).Take(serie.Settings.RoundsToCount);                
+                var numOfRounds = rounds.Count();                
+
+                result.Add(new ScorePlacement
+                {
+                    FullName = player,
+                    NumberOfRounds = numOfRounds,
+                    Place = -1,
+                    TotalScore = rounds.Sum(x => x.Score),
+                    TopResults = rounds.OrderBy(x => x.Score).ToList()
+                });
+            }
+
+            //update placements
+            result = result.OrderByDescending(x => x.NumberOfRounds ).ThenBy(x => x.AvgScore).ToList();
+
+            var lastTotalPoints = 0.0;
+            var lastPlace = 0;
+
+            //Maybe sort by rounds 
+            //Then by Avgscore for each distinct # rounds
+            for (int i = 0; i < result.Count(); i++)
+            {
+                if (lastTotalPoints == result[i].AvgScore)
+                {
+                    result[i].Place = lastPlace;
+                }
+                else
+                {
+                    result[i].Place = i + 1;
+                    lastPlace = i + 1;
+                    lastTotalPoints = result[i].AvgScore;
                 }
             }
 

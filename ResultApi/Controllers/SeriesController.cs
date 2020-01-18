@@ -70,7 +70,25 @@ namespace ResultApi.Controllers
             }
 
             return result;
+        }
 
+        [HttpGet("scoreLeaderbords")]
+        public IEnumerable<ScoreLeaderboard> GetScoreLeaderboards()
+        {
+            var result = new List<ScoreLeaderboard>();
+            var series = seriesManager.GetSeries();
+
+            foreach (var serie in series)
+            {
+                result.Add(new ScoreLeaderboard
+                {
+                    SerieName = serie.Name,
+                    RoundsToCount = serie.Settings.RoundsToCount,
+                    Placements = leaderboardManager.GetScoreLeaderboard(serie).ToList()
+                });
+            }
+
+            return result;
         }
     }
 }
