@@ -36,7 +36,7 @@ namespace ResultApi.Controllers
         [HttpGet]
         public IEnumerable<Round> Get()
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var result = new List<Round>();
                 var series = seriesRepository.GetSerieInfos();
@@ -55,7 +55,7 @@ namespace ResultApi.Controllers
         [HttpGet("{name}")]
         public Round GetByName(string name)
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var serieInfos = seriesManager.GetSerieInfos();
                 var roundInfos = roundRespository.GetRoundInformations(serieInfos);

@@ -8,11 +8,11 @@ namespace ResultApi.Common
     public class TimeMonitor : IDisposable
     {
         private readonly Stopwatch _stopwatch = new Stopwatch();        
-        private HttpRequest _request;
+        private HttpContext _context;
 
-        public TimeMonitor(HttpRequest request)
+        public TimeMonitor(HttpContext context)
         {            
-            _request = request;
+            _context = context;
 
             _stopwatch.Start();
         }
@@ -41,7 +41,7 @@ namespace ResultApi.Common
                     {
                         _stopwatch.Stop();
                         
-                        Log.Information($"{_request.Path} elapsed: {_stopwatch.ElapsedMilliseconds}ms {_request.Headers["host"]}");
+                        Log.Information($"{_context.Request.Path} elapsed: {_stopwatch.ElapsedMilliseconds}ms, from: {_context.Connection.RemoteIpAddress}");
                     }
                 }
 

@@ -39,7 +39,7 @@ namespace ResultApi.Controllers
         [HttpGet]
         public IEnumerable<Serie> Get()
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 return seriesManager.GetSeries();
             }
@@ -48,7 +48,7 @@ namespace ResultApi.Controllers
         [HttpGet("{name}")]
         public Serie GetByName(string name)
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var serieInfos = seriesManager.GetSerieInfos();
                 var serieInfo = serieInfos.FirstOrDefault(x => x.Name == name);
@@ -64,7 +64,7 @@ namespace ResultApi.Controllers
         [HttpGet("hcpLeaderbords")]
         public IEnumerable<HcpScoreLeaderboard> GetHcpLeaderboards()
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var result = new List<HcpScoreLeaderboard>();
                 var series = seriesManager.GetSeries();
@@ -86,7 +86,7 @@ namespace ResultApi.Controllers
         [HttpGet("scoreLeaderbords")]
         public IEnumerable<ScoreLeaderboard> GetScoreLeaderboards()
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var result = new List<ScoreLeaderboard>();
                 var series = seriesManager.GetSeries();

@@ -36,7 +36,7 @@ namespace ResultApi.Controllers
         [HttpGet]
         public IEnumerable<Player> Get()
         {            
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var serieInfos = seriesManager.GetSerieInfos();
                 var rounds = roundRespository.GetRounds(serieInfos);
@@ -53,7 +53,7 @@ namespace ResultApi.Controllers
         [HttpGet("{name}")]
         public IEnumerable<Player> GetByName(string name)
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var serieInfos = seriesManager.GetSerieInfos();
                 var rounds = roundRespository.GetRounds(serieInfos);
@@ -72,7 +72,7 @@ namespace ResultApi.Controllers
         [HttpGet("currentHcp")]
         public IEnumerable<PlayerHcp> CurrentHcp()
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var serieInfos = seriesManager.GetSerieInfos();
                 var rounds = roundRespository.GetRounds(serieInfos);
@@ -105,7 +105,7 @@ namespace ResultApi.Controllers
         [HttpGet("{name}/currentHcp")]
         public PlayerHcp CurrentHcpByName(string name)
         {
-            using (new TimeMonitor(Request))
+            using (new TimeMonitor(HttpContext))
             {
                 var serieInfos = seriesManager.GetSerieInfos();
                 var rounds = roundRespository.GetRounds(serieInfos);
