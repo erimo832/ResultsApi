@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using ResultApi.Common;
 using ResultManager.Managers;
 using ResultManager.Model;
 using ResultManager.Points;
@@ -31,37 +32,41 @@ namespace ResultApi.Controllers
             roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
             seriesManager = new SeriesManager(roundManager, seriesRepository);
         }
-
-        // GET: api/<controller>
+                
         [HttpGet]
         public IEnumerable<Round> Get()
-        {            
-            var result = new List<Round>();
-            var series = seriesRepository.GetSerieInfos();
-            
-            var events = roundRespository.GetRoundInformations(series);
-
-            foreach (var ev in events)
+        {
+            using (new TimeMonitor(Request))
             {
-                result.Add(roundManager.GetRound(ev));
-            }
+                var result = new List<Round>();
+                var series = seriesRepository.GetSerieInfos();
 
-            return result.OrderByDescending(x => x.RoundTime);
+                var events = roundRespository.GetRoundInformations(series);
+
+                foreach (var ev in events)
+                {
+                    result.Add(roundManager.GetRound(ev));
+                }
+
+                return result.OrderByDescending(x => x.RoundTime);
+            }
         }
 
         [HttpGet("{name}")]
-        public Round Get(string name)
+        public Round GetByName(string name)
         {
-            //TODO: Fix Bug
-            var serieInfos = seriesManager.GetSerieInfos();
-            var roundInfos = roundRespository.GetRoundInformations(serieInfos);
-            var roundInfo = roundInfos.FirstOrDefault(x => x.Name == name);
+            using (new TimeMonitor(Request))
+            {
+                var serieInfos = seriesManager.GetSerieInfos();
+                var roundInfos = roundRespository.GetRoundInformations(serieInfos);
+                var roundInfo = roundInfos.FirstOrDefault(x => x.Name == name);
 
-            if(roundInfo != null)
-                return roundManager.GetRound(roundInfo);
+                if (roundInfo != null)
+                    return roundManager.GetRound(roundInfo);
 
-            Response.StatusCode = 404;
-            return null;
+                Response.StatusCode = 404;
+                return null;
+            }
         }    
     }
 }

@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace ResultApi
 {
@@ -20,6 +13,11 @@ namespace ResultApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+                        
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File($@"{Configuration.GetValue<string>("logPath")}\info.log", rollingInterval: RollingInterval.Day)                
+                .CreateLogger();            
         }
 
         public IConfiguration Configuration { get; }

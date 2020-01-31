@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using ResultApi.Common;
 using ResultManager.Managers;
 using ResultManager.Model;
 using ResultManager.Points;
@@ -34,87 +35,99 @@ namespace ResultApi.Controllers
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<Player> Get()
-        {
-            var serieInfos = seriesManager.GetSerieInfos();
-            var rounds = roundRespository.GetRounds(serieInfos);
-            var players = roundRespository.GetPlayers(rounds);
-            
-            if(players.Count > 0)
-                return players.Select(x => x.Value).ToArray();
+        {            
+            using (new TimeMonitor(Request))
+            {
+                var serieInfos = seriesManager.GetSerieInfos();
+                var rounds = roundRespository.GetRounds(serieInfos);
+                var players = roundRespository.GetPlayers(rounds);
 
-            Response.StatusCode = 404;
-            return new List<Player>();
+                if (players.Count > 0)
+                    return players.Select(x => x.Value).ToArray();
+
+                Response.StatusCode = 404;
+                return new List<Player>();
+            }
         }
                 
         [HttpGet("{name}")]
-        public IEnumerable<Player> Get(string name)
+        public IEnumerable<Player> GetByName(string name)
         {
-            var serieInfos = seriesManager.GetSerieInfos();
-            var rounds = roundRespository.GetRounds(serieInfos);            
-            var players = roundRespository.GetPlayers(rounds);
+            using (new TimeMonitor(Request))
+            {
+                var serieInfos = seriesManager.GetSerieInfos();
+                var rounds = roundRespository.GetRounds(serieInfos);
+                var players = roundRespository.GetPlayers(rounds);
 
-            var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).ToArray();
+                var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).ToArray();
 
-            if (player != null && player.Length > 0)
-                return player;
+                if (player != null && player.Length > 0)
+                    return player;
 
-            Response.StatusCode = 404;
-            return new List<Player>();
+                Response.StatusCode = 404;
+                return new List<Player>();
+            }
         }
 
         [HttpGet("currentHcp")]
         public IEnumerable<PlayerHcp> CurrentHcp()
         {
-            var serieInfos = seriesManager.GetSerieInfos();
-            var rounds = roundRespository.GetRounds(serieInfos);
-            var players = roundRespository.GetPlayers(rounds);
-
-
-            if (players != null)
+            using (new TimeMonitor(Request))
             {
-                var result = new List<PlayerHcp>();
-                var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
+                var serieInfos = seriesManager.GetSerieInfos();
+                var rounds = roundRespository.GetRounds(serieInfos);
+                var players = roundRespository.GetPlayers(rounds);
 
-                foreach (var player in players)
+
+                if (players != null)
                 {
-                    result.Add(new PlayerHcp
+                    var result = new List<PlayerHcp>();
+                    var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
+
+                    foreach (var player in players)
                     {
-                        FullName = player.Value.FullName,
-                        Hcp = rule.CalculateHcp(player.Value.Rounds)
-                    });
+                        result.Add(new PlayerHcp
+                        {
+                            FullName = player.Value.FullName,
+                            Hcp = rule.CalculateHcp(player.Value.Rounds)
+                        });
+                    }
+
+
+                    return result.OrderBy(x => x.Hcp);
                 }
 
-
-                return result.OrderBy(x => x.Hcp);
+                Response.StatusCode = 404;
+                return new List<PlayerHcp>();
             }
-            
-            Response.StatusCode = 404;
-            return new List<PlayerHcp>();
         }
 
         [HttpGet("{name}/currentHcp")]
-        public PlayerHcp CurrentHcp(string name)
+        public PlayerHcp CurrentHcpByName(string name)
         {
-            var serieInfos = seriesManager.GetSerieInfos();
-            var rounds = roundRespository.GetRounds(serieInfos);
-            var players = roundRespository.GetPlayers(rounds);
-
-
-            var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).FirstOrDefault();
-
-            if (player != null)
+            using (new TimeMonitor(Request))
             {
-                var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
+                var serieInfos = seriesManager.GetSerieInfos();
+                var rounds = roundRespository.GetRounds(serieInfos);
+                var players = roundRespository.GetPlayers(rounds);
 
-                return new PlayerHcp
+
+                var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).FirstOrDefault();
+
+                if (player != null)
                 {
-                    FullName = player.FullName,
-                    Hcp = rule.CalculateHcp(player.Rounds)
-                };
+                    var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
+
+                    return new PlayerHcp
+                    {
+                        FullName = player.FullName,
+                        Hcp = rule.CalculateHcp(player.Rounds)
+                    };
+                }
+
+                Response.StatusCode = 404;
+                return null;
             }
-                
-            Response.StatusCode = 404;
-            return null;
         }
     }
 }

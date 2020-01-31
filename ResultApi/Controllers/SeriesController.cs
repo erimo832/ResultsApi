@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using ResultApi.Common;
 using ResultApi.ViewModel;
 using ResultManager.Managers;
 using ResultManager.Model;
@@ -37,58 +39,70 @@ namespace ResultApi.Controllers
         [HttpGet]
         public IEnumerable<Serie> Get()
         {
-            return seriesManager.GetSeries();
+            using (new TimeMonitor(Request))
+            {
+                return seriesManager.GetSeries();
+            }
         }
 
         [HttpGet("{name}")]
-        public Serie Get(string name)
+        public Serie GetByName(string name)
         {
-            var serieInfos = seriesManager.GetSerieInfos();
-            var serieInfo = serieInfos.FirstOrDefault(x => x.Name == name);
-            
-            if(serieInfo != null)
-                return seriesManager.GetSerie(serieInfo);
+            using (new TimeMonitor(Request))
+            {
+                var serieInfos = seriesManager.GetSerieInfos();
+                var serieInfo = serieInfos.FirstOrDefault(x => x.Name == name);
 
-            Response.StatusCode = 404;
-            return null;
+                if (serieInfo != null)
+                    return seriesManager.GetSerie(serieInfo);
+
+                Response.StatusCode = 404;
+                return null;
+            }
         }
 
         [HttpGet("hcpLeaderbords")]
         public IEnumerable<HcpScoreLeaderboard> GetHcpLeaderboards()
         {
-            var result = new List<HcpScoreLeaderboard>();
-            var series = seriesManager.GetSeries();
-
-            foreach (var serie in series)
+            using (new TimeMonitor(Request))
             {
-                result.Add(new HcpScoreLeaderboard 
-                { 
-                    SerieName = serie.Name,
-                    RoundsToCount = serie.Settings.RoundsToCount,
-                    Placements = leaderboardManager.GetHcpLeaderboard(serie).ToList()
-                });
-            }
+                var result = new List<HcpScoreLeaderboard>();
+                var series = seriesManager.GetSeries();
 
-            return result;
+                foreach (var serie in series)
+                {
+                    result.Add(new HcpScoreLeaderboard
+                    {
+                        SerieName = serie.Name,
+                        RoundsToCount = serie.Settings.RoundsToCount,
+                        Placements = leaderboardManager.GetHcpLeaderboard(serie).ToList()
+                    });
+                }
+
+                return result;
+            }
         }
 
         [HttpGet("scoreLeaderbords")]
         public IEnumerable<ScoreLeaderboard> GetScoreLeaderboards()
         {
-            var result = new List<ScoreLeaderboard>();
-            var series = seriesManager.GetSeries();
-
-            foreach (var serie in series)
+            using (new TimeMonitor(Request))
             {
-                result.Add(new ScoreLeaderboard
-                {
-                    SerieName = serie.Name,
-                    RoundsToCount = serie.Settings.RoundsToCount,
-                    Placements = leaderboardManager.GetScoreLeaderboard(serie).ToList()
-                });
-            }
+                var result = new List<ScoreLeaderboard>();
+                var series = seriesManager.GetSeries();
 
-            return result;
+                foreach (var serie in series)
+                {
+                    result.Add(new ScoreLeaderboard
+                    {
+                        SerieName = serie.Name,
+                        RoundsToCount = serie.Settings.RoundsToCount,
+                        Placements = leaderboardManager.GetScoreLeaderboard(serie).ToList()
+                    });
+                }
+
+                return result;
+            }
         }
     }
 }
