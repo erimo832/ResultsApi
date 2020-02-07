@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import i18n from '../i18n'
@@ -19,6 +19,13 @@ export class NavMenu extends Component {
   toggleNavbar () {
     this.setState({
       collapsed: !this.state.collapsed
+    });
+  }
+
+  changeLanguage(lng) {
+    i18n.changeLanguage(lng);
+    this.setState({
+      lang: true
     });
   }
 
@@ -45,6 +52,23 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/series">{i18n.t('menu_series')}</NavLink>
                 </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
+                    {i18n.t('language')}
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem>
+                      <NavItem onClick={() => this.changeLanguage('sv')}>
+                        <NavLink tag={Link} className="text-dark" to="/">Svenska</NavLink>
+                      </NavItem>
+                    </DropdownItem>
+                    <DropdownItem  onClick={() => this.changeLanguage('en')}>
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/">English</NavLink>
+                      </NavItem>
+                    </DropdownItem>                    
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </ul>
             </Collapse>
           </Container>

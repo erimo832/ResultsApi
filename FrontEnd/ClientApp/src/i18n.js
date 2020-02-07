@@ -4,7 +4,8 @@ import { initReactI18next } from "react-i18next";
 // TODO: Move translations it its own json files
 const resources = {
   en: {
-    translation: {                  
+    translation: {       
+      "language": "English",           
       "common_loading": "Loading...",
       "column_name": "Name",
       "column_hcp": "Hcp",
@@ -37,7 +38,8 @@ const resources = {
     }
   },
   sv: {
-    translation: {      
+    translation: { 
+      "language": "Svenska",
       "common_loading": "Laddar...",           
       "column_name": "Namn",
       "column_hcp": "Hcp",
