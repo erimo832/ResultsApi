@@ -49,11 +49,25 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/rounds">{i18n.t('menu_rounds')}</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/series">{i18n.t('menu_series')}</NavLink>
-                </NavItem>
                 <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret>
+                  <DropdownToggle className="text-dark" nav caret>
+                  {i18n.t('menu_leaderboards')}
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem>
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/leaderboards/point">{i18n.t('menu_pointleaderboard')}</NavLink>
+                      </NavItem>               
+                    </DropdownItem>
+                    <DropdownItem>
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/leaderboards/score">{i18n.t('menu_scoreleaderboard')}</NavLink>
+                      </NavItem>
+                    </DropdownItem>                    
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle className="text-dark" nav caret>
                     {i18n.t('language')}
                   </DropdownToggle>
                   <DropdownMenu right>

@@ -3,10 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
 import {Container, Row, Col } from 'react-bootstrap'
-import i18n from "../i18n";
+import i18n from "../../i18n";
 
-export class Series extends Component {
-  static displayName = Series.name;
+export class ScoreLeaderboard extends Component {
+  static displayName = ScoreLeaderboard.name;
 
   constructor(props) {
     super(props);
@@ -47,12 +47,10 @@ export class Series extends Component {
                     <tr>              
                       <th>{i18n.t('column_place')}</th>
                       <th>{i18n.t('column_name')}</th>
-                      <th>{i18n.t('column_totalpoints')}</th>
-                      <th className="d-none d-lg-table-cell">{i18n.t('column_avgpoints')}</th>                                
-                      <th className="d-none d-md-table-cell">{i18n.t('column_avghcpscore')}</th> 
-                      <th className="d-none d-lg-table-cell">{i18n.t('column_totalhcpscore')}</th>
-                      <th className="d-none d-sm-table-cell">{i18n.t('column_maxpoints')}</th>
-                      <th className="d-none d-sm-table-cell">{i18n.t('column_minpoints')}</th>
+                      <th>{i18n.t('column_avgscore')}</th>                      
+                      <th className="d-none d-lg-table-cell">{i18n.t('column_totalscore')}</th>
+                      <th className="d-none d-sm-table-cell">{i18n.t('column_minthrows')}</th>
+                      <th className="d-none d-sm-table-cell">{i18n.t('column_maxthrows')}</th>
                       <th className="d-none d-lg-table-cell">{i18n.t('column_rounds')}</th>
                     </tr>
                   </thead>
@@ -61,12 +59,10 @@ export class Series extends Component {
                       <tr key={player.fullName}>
                           <td>{player.place}</td>
                           <td>{player.fullName}</td>                  
-                          <td>{player.totalPoints}</td>                  
-                          <td className="d-none d-lg-table-cell">{player.avgPoints}</td>                          
-                          <td className="d-none d-md-table-cell">{player.avgHcpScore}</td>
-                          <td className="d-none d-lg-table-cell">{player.totalHcpScore}</td>                  
-                          <td className="d-none d-sm-table-cell">{player.topResults[0].points}</td>
-                          <td className="d-none d-sm-table-cell">{player.topResults[player.topResults.length - 1].points}</td>
+                          <td>{player.avgScore}</td>                  
+                          <td className="d-none d-lg-table-cell">{player.totalScore}</td>                                                    
+                          <td className="d-none d-sm-table-cell">{player.topResults[0].score}</td>
+                          <td className="d-none d-sm-table-cell">{player.topResults[player.topResults.length - 1].score}</td>
                           <td className="d-none d-lg-table-cell">{player.numberOfRounds}</td>
                       </tr>
                     )}
@@ -85,11 +81,11 @@ export class Series extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>{i18n.t('common_loading')}</em></p>
-      : Series.renderSeriesTable(this.state.series);
+      : ScoreLeaderboard.renderSeriesTable(this.state.series);
      
     return (
       <div>
-        <h1 id="tabelLabel">{i18n.t('series_header')}</h1>
+        <h1 id="tabelLabel">{i18n.t('leaderboard_score_header')}</h1>
         <p>{i18n.t('series_description')}</p>
         {contents}
       </div>
@@ -97,7 +93,7 @@ export class Series extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch('http://orbitibro.ddns.net:8088/api/Series/hcpLeaderbords');
+    const response = await fetch('http://orbitibro.ddns.net:8088/api/Series/scoreLeaderbords');
     const data = await response.json();
     this.setState({ series: data, loading: false });
   }
