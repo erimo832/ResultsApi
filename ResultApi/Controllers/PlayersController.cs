@@ -34,22 +34,15 @@ namespace ResultApi.Controllers
 
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<Player> Get()
-        {            
+        public IEnumerable<string> Get()
+        {
             using (new TimeMonitor(HttpContext))
             {
-                var serieInfos = seriesManager.GetSerieInfos();
-                var rounds = roundRespository.GetRounds(serieInfos);
-                var players = roundRespository.GetPlayers(rounds);
-
-                if (players.Count > 0)
-                    return players.Select(x => x.Value).ToArray();
-
-                Response.StatusCode = 404;
-                return new List<Player>();
+                var rounds = roundRespository.GetAllRounds();
+                return rounds.Select(x => x.FullName).Distinct().OrderBy(x => x);
             }
         }
-                
+
         [HttpGet("{name}")]
         public IEnumerable<Player> GetByName(string name)
         {

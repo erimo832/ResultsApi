@@ -7,6 +7,8 @@ import { Rounds } from './components/Rounds';
 import { PointLeaderboard } from './components/leaderboards/PointLeaderboard';
 import { ScoreLeaderboard} from './components/leaderboards/ScoreLeaderboard';
 import './custom.css';
+import { Players } from './components/players/Players';
+import { PlayerInfo } from './components/players/PlayerInfo';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -18,6 +20,8 @@ export default class App extends Component {
         <Route exact path='/' component={Home} />
         <Route path='/hcp/' component={Hcp} />
         <Route path='/rounds' component={Rounds} />
+        <Route path='/players' component={Players} />
+        <Route path='/playerinfo' component={PlayerInfo} />
         <Route path='/leaderboards/point' component={PointLeaderboard} />
         <Route path='/leaderboards/score' component={ScoreLeaderboard} />
       </Layout>
