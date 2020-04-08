@@ -29,7 +29,7 @@ export class Players extends Component {
 
   static renderPlayersTable(hcpList) {
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
+      <table className='table table-condensed table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
             <th>{i18n.t('column_name')}</th>

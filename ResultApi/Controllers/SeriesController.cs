@@ -79,7 +79,7 @@ namespace ResultApi.Controllers
                     });
                 }
 
-                return result;
+                return result.ToList().OrderByDescending(x => x.SerieName);
             }
         }
 
@@ -101,7 +101,7 @@ namespace ResultApi.Controllers
                     });
                 }
 
-                return result;
+                return result.ToList().OrderByDescending(x => x.SerieName);
             }
         }
     }

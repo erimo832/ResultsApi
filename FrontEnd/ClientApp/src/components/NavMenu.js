@@ -30,6 +30,11 @@ export class NavMenu extends Component {
   }
 
   render () { 
+    /*
+    <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/players">nt_Players</NavLink>
+                </NavItem>
+    */
     return (
       <header>        
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -47,9 +52,7 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/rounds">{i18n.t('menu_rounds')}</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/players">nt_Players</NavLink>
-                </NavItem>
+                
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle className="text-dark" nav caret>
                   {i18n.t('menu_leaderboards')}

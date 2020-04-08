@@ -24,6 +24,8 @@ export class PlayerInfo extends Component {
     this.populateResultData();
   }
 
+//npm i react-apexcharts
+
   //Ugly substring to show date
   static renderPlayerInfoTable(info) {
     if(info.length == 0)
@@ -32,7 +34,7 @@ export class PlayerInfo extends Component {
     return (
         <div>
             <div></div>
-            <table className='table table-striped' aria-labelledby="tabelLabel">
+            <table className='table table-striped table-condensed' aria-labelledby="tabelLabel">
             <thead>
                 <tr>
                     <th>nt_EventName</th>
