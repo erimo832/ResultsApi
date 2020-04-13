@@ -80,21 +80,24 @@ namespace ResultManager.Respository
                 {
                     var columns = lines[i].Split(Separator);
 
-                    rounds.Add(new PlayerRound
+                    if (!columns[Col_Score].Contains("DNF"))
                     {
-                        RoundTime = roundDate,
-                        EventName = ev.Name,
-                        DivCode = columns[Col_DivCode].Replace("=", "").Replace("\"", ""),
-                        Place = Convert.ToInt32(columns[Col_Place]),
-                        FirstName = columns[Col_FirstName].Replace("=", "").Replace("\"", ""),
-                        LastName = columns[Col_LastName].Replace("=", "").Replace("\"", ""),
-                        PDGANumber = columns[Col_PdgaNumber] == "" ? null : (long?)Convert.ToInt64(columns[Col_PdgaNumber]),
-                        RoundNumber = 1, //Hard code to 1 for now
-                        Score = Convert.ToInt32(columns[Col_Score]),
-                        Total = Convert.ToInt32(columns[Col_Total]),
-                        Series = serie.Name,
-                        RoundPath = ev.RoundPath
-                    });
+                        rounds.Add(new PlayerRound
+                        {
+                            RoundTime = roundDate,
+                            EventName = ev.Name,
+                            DivCode = columns[Col_DivCode].Replace("=", "").Replace("\"", ""),
+                            Place = Convert.ToInt32(columns[Col_Place]),
+                            FirstName = columns[Col_FirstName].Replace("=", "").Replace("\"", ""),
+                            LastName = columns[Col_LastName].Replace("=", "").Replace("\"", ""),
+                            PDGANumber = columns[Col_PdgaNumber] == "" ? null : (long?)Convert.ToInt64(columns[Col_PdgaNumber]),
+                            RoundNumber = 1, //Hard code to 1 for now
+                            Score = Convert.ToInt32(columns[Col_Score]),
+                            Total = Convert.ToInt32(columns[Col_Total]),
+                            Series = serie.Name,
+                            RoundPath = ev.RoundPath
+                        });
+                    }
                 }
             }
 
