@@ -25,12 +25,14 @@ const resources = {
       "column_maxthrows": "Max throws",
       "column_minthrows": "Min throws",
       "column_ctp": "Ctp",
+      "column_numerofctps": "Number of ctp",
       "menu_home": "Home",
       "menu_hcp": "Hcp",
       "menu_rounds": "Rounds",
       "menu_leaderboards": "Leaderboards",
       "menu_scoreleaderboard": "Score",
       "menu_pointleaderboard": "Points",
+      "menu_ctpleaderboard": "Ctp",
       "home_header": "",
       "home_description": "",
       "hcp_header": "Current handicap",
@@ -43,6 +45,7 @@ const resources = {
       "series_basednumrounds": "Based on the{{cnt}} best point rounds for each players.",
       "leaderboard_points_header": "Points leaderboard",
       "leaderboard_score_header": "Score leaderboard",
+      "leaderboard_ctp_header": "Ctp leaderboard",
     }
   },
   sv: {
@@ -67,12 +70,14 @@ const resources = {
       "column_maxthrows": "Maxkast",
       "column_minthrows": "Minkast",      
       "column_ctp": "Ctp",
+      "column_numerofctps": "Antal ctp",
       "menu_home": "Hem",
       "menu_hcp": "Hcp",
       "menu_rounds": "Rundor",
       "menu_leaderboards": "Tabeller",
       "menu_scoreleaderboard": "Kast",
       "menu_pointleaderboard": "Poäng",
+      "menu_ctpleaderboard": "Ctp",
       "home_header": "",
       "home_description": "",
       "hcp_header": "Nuvarande handicap",
@@ -85,6 +90,7 @@ const resources = {
       "series_basednumrounds": "Summeras på de {{cnt}} bästa poängrundorna för varje spelare.",
       "leaderboard_points_header": "Poängtabell",
       "leaderboard_score_header": "Kasttabell",
+      "leaderboard_ctp_header": "Ctp-tabell",
     }
   }
 };

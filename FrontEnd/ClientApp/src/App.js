@@ -6,6 +6,7 @@ import { Hcp } from './components/Hcp';
 import { Rounds } from './components/Rounds';
 import { PointLeaderboard } from './components/leaderboards/PointLeaderboard';
 import { ScoreLeaderboard} from './components/leaderboards/ScoreLeaderboard';
+import { CtpLeaderboard} from './components/leaderboards/CtpLeaderboard';
 import './custom.css';
 import { Players } from './components/players/Players';
 import { PlayerInfo } from './components/players/PlayerInfo';
@@ -24,6 +25,7 @@ export default class App extends Component {
         <Route path='/playerinfo' component={PlayerInfo} />
         <Route path='/leaderboards/point' component={PointLeaderboard} />
         <Route path='/leaderboards/score' component={ScoreLeaderboard} />
+        <Route path='/leaderboards/ctp' component={CtpLeaderboard} />
       </Layout>
     );
   }

@@ -67,7 +67,12 @@ export class NavMenu extends Component {
                       <NavItem>
                         <NavLink tag={Link} className="text-dark" to="/leaderboards/score">{i18n.t('menu_scoreleaderboard')}</NavLink>
                       </NavItem>
-                    </DropdownItem>                    
+                    </DropdownItem>
+                    <DropdownItem>
+                      <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/leaderboards/ctp">{i18n.t('menu_ctpleaderboard')}</NavLink>
+                      </NavItem>
+                    </DropdownItem>  
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <UncontrolledDropdown nav inNavbar>
