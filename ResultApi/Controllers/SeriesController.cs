@@ -104,5 +104,26 @@ namespace ResultApi.Controllers
                 return result.ToList().OrderByDescending(x => x.SerieName);
             }
         }
+
+        [HttpGet("ctpLeaderbords")]
+        public IEnumerable<CtpLeaderboard> GetCtpLeaderboards()
+        {
+            using (new TimeMonitor(HttpContext))
+            {
+                var result = new List<CtpLeaderboard>();
+                var series = seriesManager.GetSeries();
+
+                foreach (var serie in series)
+                {
+                    result.Add(new CtpLeaderboard
+                    {
+                        SerieName = serie.Name,
+                        Placements = leaderboardManager.GetCtpLeaderboard(serie).ToList()
+                    });
+                }
+
+                return result.ToList().OrderByDescending(x => x.SerieName);
+            }
+        }
     }
 }

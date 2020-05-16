@@ -9,5 +9,6 @@ namespace ResultManager.Managers
     {
         IList<HcpScorePlacement> GetHcpLeaderboard(Serie serie);
         IList<ScorePlacement> GetScoreLeaderboard(Serie serie);
+        IList<CtpPlacement> GetCtpLeaderboard(Serie serie);
     }
 }

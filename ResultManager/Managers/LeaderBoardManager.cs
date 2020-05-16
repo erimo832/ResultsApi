@@ -8,6 +8,55 @@ namespace ResultManager.Managers
 {
     public class LeaderboardManager : ILeaderboardManager
     {
+        public IList<CtpPlacement> GetCtpLeaderboard(Serie serie)
+        {
+            var result = new List<CtpPlacement>();
+
+            List<string> players = new List<string>();
+            List<PlayerResult> allResults = new List<PlayerResult>();
+
+            serie.Rounds.ForEach(x =>
+                allResults.AddRange(x.Results)
+            );
+
+            players = allResults.Select(x => x.FullName).Distinct().ToList();
+
+            foreach (var player in players)
+            {
+                var rounds = allResults.Where(z => z.FullName == player).OrderByDescending(x => x.Points).ThenBy(x => x.HcpScore).Take(serie.Settings.RoundsToCount);                
+                var numOfRounds = rounds.Count();
+
+                result.Add(new CtpPlacement
+                {
+                    FullName = player,
+                    NumberOfRounds = numOfRounds,
+                    Ctps = rounds.Count(x => x.Ctp),
+                    Place = -1
+                });
+            }
+
+            //update placements
+            result = result.OrderByDescending(x => x.Ctps).ToList();
+
+            var lastTotalPoints = 0.0;
+            var lastPlace = 0;
+            for (int i = 0; i < result.Count(); i++)
+            {
+                if (lastTotalPoints == result[i].Ctps)
+                {
+                    result[i].Place = lastPlace;
+                }
+                else
+                {
+                    result[i].Place = i + 1;
+                    lastPlace = i + 1;
+                    lastTotalPoints = result[i].Ctps;
+                }
+            }
+
+            return result;
+        }
+
         public IList<HcpScorePlacement> GetHcpLeaderboard(Serie serie)
         {
             var result = new List<HcpScorePlacement>();
