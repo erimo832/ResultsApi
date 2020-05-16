@@ -11,6 +11,7 @@ namespace ResultManager.Respository
     {        
         private const char Separator = ',';
 
+        private const int MaxColumns = 8;
         private const int Col_DivCode = 0;
         private const int Col_Place = 1;
         private const int Col_FirstName = 2;
@@ -18,7 +19,8 @@ namespace ResultManager.Respository
         private const int Col_PdgaNumber = 4;
         private const int Col_Score = 5;
         private const int Col_Total = 6;
-                        
+        private const int Col_Ctp = 7;
+
 
         public IList<RoundInfo> GetRoundInformations(IList<SerieInfo> series)
         {            
@@ -94,6 +96,7 @@ namespace ResultManager.Respository
                             RoundNumber = 1, //Hard code to 1 for now
                             Score = Convert.ToInt32(columns[Col_Score]),
                             Total = Convert.ToInt32(columns[Col_Total]),
+                            Ctp = columns.Length == MaxColumns ? columns[Col_Ctp].Trim() == "1" : false,
                             Series = serie.Name,
                             RoundPath = ev.RoundPath
                         });

@@ -16,6 +16,7 @@ namespace ResultManager.Model
         public double HcpScore { get; set; }
         public int Place { get; set; }
         public double Points { get; set; }
+        public bool Ctp { get; set; }
         
     }
 }

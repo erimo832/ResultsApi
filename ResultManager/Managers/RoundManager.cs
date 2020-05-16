@@ -49,7 +49,8 @@ namespace ResultManager.Managers
                         Hcp = 0.0,
                         HcpScore = 0.0,
                         Place = 0,
-                        Points = 0.0
+                        Points = 0.0,
+                        Ctp = round.Ctp
                     };
 
                     res.Hcp = _rule.CalculateHcp(player.Value.Rounds.Where(x => x.RoundTime < round.RoundTime).ToList());
