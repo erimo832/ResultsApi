@@ -42,6 +42,7 @@ export class Rounds extends Component {
               <th className="d-none d-sm-table-cell">{i18n.t('column_score')}</th>
               <th className="d-none d-sm-table-cell">{i18n.t('column_hcp')}</th>
               <th className="d-none d-sm-table-cell">{i18n.t('column_hcpscore')}</th>
+              <th className="d-none d-md-table-cell">{i18n.t('column_ctp')}</th>
             </tr>
           </thead>
           <tbody>
@@ -53,6 +54,7 @@ export class Rounds extends Component {
                   <td className="d-none d-sm-table-cell">{player.score}</td>
                   <td className="d-none d-sm-table-cell">{player.hcp}</td>                  
                   <td className="d-none d-sm-table-cell">{player.hcpScore}</td>
+                  <td className="d-none d-md-table-cell">{ player.ctp === true ? "1": "0" }</td>
               </tr>
             )}
           </tbody>
