@@ -12,18 +12,24 @@ namespace ResultManager.Rules
         public double CourseAdjustedPar { get; set; } = 48.0;
         public double SlopeFactor { get; set; } = 0.8;
         public int HcpDecimals { get; set; } = 1;
-        
-        public double CalculateAvgScore(List<PlayerRound> rounds)
+        public int TakeCountForAvg(int numOfRoundsPlayed)
         {
+            numOfRoundsPlayed = numOfRoundsPlayed > TotalRounds ? TotalRounds : numOfRoundsPlayed;
+
             var cnt = Math.Floor(TotalRounds / 3.0);
-            if (rounds.Count < TotalRounds)
+            if (numOfRoundsPlayed < TotalRounds)
             {
-                cnt = Math.Floor(rounds.Count / 3.0);
+                cnt = Math.Floor(numOfRoundsPlayed / 3.0);
             }
             if (cnt == 0)
                 cnt = 1;
 
-            var takeCnt = Convert.ToInt32(cnt);
+            return Convert.ToInt32(cnt);
+        }
+        
+        public double CalculateAvgScore(List<PlayerRound> rounds)
+        {
+            var takeCnt = TakeCountForAvg(rounds.Count);
 
             var topThirdRounds = rounds.OrderByDescending(x => x.RoundTime).Take(TotalRounds);
 

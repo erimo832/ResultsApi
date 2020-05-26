@@ -21,15 +21,17 @@ namespace ResultApi.Controllers
         private IHcpRule hcpRule;
         private IPointsCalulation pointCalculation;
         private IRoundManager roundManager;
+        private IPlayerManager playerManager;
 
         public PlayersController()
         {
             roundRespository = new RoundRespository();
-            seriesRepository = new SeriesRepository();
+            seriesRepository = new SeriesRepository();            
             hcpRule = new RuleAvgThirdCeiled();
             pointCalculation = new PointsCalulation();
             roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
             seriesManager = new SeriesManager(roundManager, seriesRepository);
+            playerManager = new PlayerManager(roundRespository, hcpRule, pointCalculation, roundManager, seriesManager);
         }
 
         // GET: api/<controller>
@@ -44,21 +46,18 @@ namespace ResultApi.Controllers
         }
 
         [HttpGet("{name}")]
-        public IEnumerable<Player> GetByName(string name)
+        //public IEnumerable<Player> GetDetailsByName(string name)
+        public PlayerDetail GetDetailsByName(string name)
         {
             using (new TimeMonitor(HttpContext))
             {
-                var serieInfos = seriesManager.GetSerieInfos();
-                var rounds = roundRespository.GetRounds(serieInfos);
-                var players = roundRespository.GetPlayers(rounds);
+                var details = playerManager.GetPlayerDetail(name);
 
-                var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).ToArray();
-
-                if (player != null && player.Length > 0)
-                    return player;
+                if (details != null)
+                    return details;
 
                 Response.StatusCode = 404;
-                return new List<Player>();
+                return new PlayerDetail();
             }
         }
 
@@ -75,7 +74,7 @@ namespace ResultApi.Controllers
                 if (players != null)
                 {
                     var result = new List<PlayerHcp>();
-                    var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
+                    var rule = new RuleAvgThirdCeiled();
 
                     foreach (var player in players)
                     {
@@ -109,7 +108,7 @@ namespace ResultApi.Controllers
 
                 if (player != null)
                 {
-                    var rule = new RuleAvgThirdCeiled() { TotalRounds = 18 };
+                    var rule = new RuleAvgThirdCeiled();
 
                     return new PlayerHcp
                     {

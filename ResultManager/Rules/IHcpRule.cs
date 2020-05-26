@@ -10,5 +10,7 @@ namespace ResultManager.Rules
         double CalculateAvgScore(List<PlayerRound> rounds);
         double CalculateHcp(double avgScore);
         double CalculateHcp(List<PlayerRound> rounds);
+        int TakeCountForAvg(int numOfRoundsPlayed);
+        int TotalRounds { get; }
     }
 }
