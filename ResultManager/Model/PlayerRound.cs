@@ -19,6 +19,6 @@ namespace ResultManager.Model
         public string Series { get; set; }  //Serie
         public string RoundPath { get; set; } //Local
 
-        public string FullName => FirstName + " " + LastName;
+        public string FullName => FirstName.Trim() + " " + LastName.Trim();
     }
 }

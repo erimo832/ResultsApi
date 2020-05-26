@@ -34,20 +34,26 @@ export class PlayerInfo extends Component {
     return (
         <div>
             <div></div>
-            <table className='table table-striped table-condensed' aria-labelledby="tabelLabel">
+            <table className='table table-condensed table-sm' aria-labelledby="tabelLabel">
             <thead>
-                <tr>
-                    <th>nt_EventName</th>
+                <tr>                    
                     <th>nt_RoundDate</th>
+                    <th>nt_Event name</th>
                     <th>nt_Score</th>
+                    <th>nt_Hcp</th>
+                    <th>nt_HcpScore</th>
+                    <th>nt_Points</th>
                 </tr>
             </thead>
             <tbody>
-                {info[0].rounds.map(rounds =>
-                <tr key={rounds.eventName}>
-                    <td>{rounds.eventName}</td>
-                    <td>{rounds.roundTime.substring(0,10)}</td>
-                    <td>{rounds.score}</td>
+                {info.events.map(x =>
+                <tr key={x.time} class={x.inHcpAvgCalculation ? 'avg' : (x.inHcpCalculation === true ? 'top' : 'none' ) }>
+                    <td>{x.eventName}</td>
+                    <td>{x.time.substring(0,10)}</td>                    
+                    <td>{x.score}</td>
+                    <td>{x.hcp}</td>
+                    <td>{x.hcpScore}</td>
+                    <td>{x.roundPoints}</td>
                 </tr>
                 )}
             </tbody>
@@ -73,7 +79,7 @@ export class PlayerInfo extends Component {
   async populateResultData() {
     var data = [];
     if(this.state.name != "") {
-        const response = await fetch('http://orbitibro.ddns.net:8088/api/Players/' + this.state.name);    
+        const response = await fetch('http://orbitibro.ddns.net:8088/api/Players/' + this.state.name);
         data = await response.json();
     }
     this.setState({ playerInfo: data, loading: false });

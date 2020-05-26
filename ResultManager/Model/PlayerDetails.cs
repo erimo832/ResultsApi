@@ -8,13 +8,14 @@ namespace ResultManager.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public long? PDGANumber { get; set; }
-        public string FullName => FirstName + " " + LastName;
+        public string FullName => FirstName.Trim() + " " + LastName.Trim();
 
         public IList<Event> Events { get; set; } = new List<Event>();
     }
 
     public class Event
     {
+        public string EventName { get; set; }
         public DateTime Time { get; set; }
         public int Score { get; set; }
         public double HcpScore { get; set; }

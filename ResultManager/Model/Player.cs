@@ -6,7 +6,7 @@ namespace ResultManager.Model
 {
     public class Player
     {
-        public string FullName => FirstName + " " + LastName;
+        public string FullName => FirstName.Trim() + " " + LastName.Trim();
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public long? PDGANumber { get; set; }

@@ -19,17 +19,9 @@ export class Players extends Component {
     this.populateResultData();
   }
 
-  /*
-  <NavLink tag={Link} className="text-dark" to={{
-                        pathname:"/playerInfo",
-                        playerName: {player}
-                    }}>{player}</NavLink>
-  */
-  //<Link to="/playerInfo">{player}</Link>
-
   static renderPlayersTable(hcpList) {
     return (
-      <table className='table table-condensed table-striped' aria-labelledby="tabelLabel">
+      <table className='table table-condensed table-striped table-sm' aria-labelledby="tabelLabel">
         <thead>
           <tr>
             <th>{i18n.t('column_name')}</th>

@@ -42,6 +42,7 @@ namespace ResultManager.Managers
                 {
                     result.Events.Add(new Event
                     {
+                        EventName = r.EventName,
                         Time = r.RoundTime,
                         HcpScore = score.HcpScore,
                         Hcp = score.Hcp,
