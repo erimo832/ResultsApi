@@ -51,8 +51,8 @@ export class Players extends Component {
      
     return (
       <div>
-        <h1 id="tabelLabel">nt_Players</h1>
-        <p>nt_Players info text</p>        
+        <h1 id="tabelLabel">{i18n.t('players_header')}</h1>
+        <p>{i18n.t('players_description')}</p>        
         {contents}
       </div>
     );

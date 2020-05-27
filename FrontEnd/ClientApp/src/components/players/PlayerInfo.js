@@ -29,7 +29,7 @@ export class PlayerInfo extends Component {
   //Ugly substring to show date
   static renderPlayerInfoTable(info) {
     if(info.length == 0)
-        return (<div>nt_No player</div>);
+        return (<div>{i18n.t('playersinfo_no_found')}</div>);
 
     return (
         <div>
@@ -37,23 +37,25 @@ export class PlayerInfo extends Component {
             <table className='table table-condensed table-sm' aria-labelledby="tabelLabel">
             <thead>
                 <tr>                    
-                    <th>nt_RoundDate</th>
-                    <th>nt_Event name</th>
-                    <th>nt_Score</th>
-                    <th>nt_Hcp</th>
-                    <th>nt_HcpScore</th>
-                    <th>nt_Points</th>
+                    <th className="d-none d-lg-table-cell">{i18n.t('column_round')}</th>
+                    <th>{i18n.t('column_date')}</th>
+                    <th>{i18n.t('column_place')}</th>
+                    <th>{i18n.t('column_points')}</th>
+                    <th>{i18n.t('column_score')}</th>
+                    <th className="d-none d-sm-table-cell">{i18n.t('column_hcp')}</th>
+                    <th className="d-none d-sm-table-cell">{i18n.t('column_hcpscore')}</th>
                 </tr>
             </thead>
             <tbody>
                 {info.events.map(x =>
-                <tr key={x.time} class={x.inHcpAvgCalculation ? 'avg' : (x.inHcpCalculation === true ? 'top' : 'none' ) }>
-                    <td>{x.eventName}</td>
-                    <td>{x.time.substring(0,10)}</td>                    
-                    <td>{x.score}</td>
-                    <td>{x.hcp}</td>
-                    <td>{x.hcpScore}</td>
+                <tr key={x.time} class={x.inHcpAvgCalculation ? 'avg' : (x.inHcpCalculation === true ? 'top' : 'none' ) }>                    
+                    <td className="d-none d-lg-table-cell">{x.eventName}</td>
+                    <td>{x.time.substring(0,10)}</td>
+                    <td>{x.place}</td>
                     <td>{x.roundPoints}</td>
+                    <td>{x.score}</td>
+                    <td className="d-none d-sm-table-cell">{x.hcp}</td>
+                    <td className="d-none d-sm-table-cell">{x.hcpScore}</td>
                 </tr>
                 )}
             </tbody>
@@ -70,7 +72,6 @@ export class PlayerInfo extends Component {
     return (
       <div>
         <h1 id="tabelLabel">{this.state.name}</h1>
-        <p>nt_Players info text</p>        
         {contents}
       </div>
     );
