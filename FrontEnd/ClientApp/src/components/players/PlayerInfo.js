@@ -1,7 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
-import { Nav, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import i18n from "../../i18n";
 
 export class PlayerInfo extends Component {
@@ -10,7 +8,7 @@ export class PlayerInfo extends Component {
   constructor(props) {
     super(props);
     var name = "";
-    if(props.location.playerName)
+    if(props.location && props.location.playerName)
         name = props.location.playerName.player;
 
     this.state = { 
@@ -28,7 +26,7 @@ export class PlayerInfo extends Component {
 
   //Ugly substring to show date
   static renderPlayerInfoTable(info) {
-    if(info.length == 0)
+    if(info.length === 0)
         return (<div>{i18n.t('playersinfo_no_found')}</div>);
 
     return (
@@ -79,7 +77,7 @@ export class PlayerInfo extends Component {
 
   async populateResultData() {
     var data = [];
-    if(this.state.name != "") {
+    if(this.state.name !== "") {
         const response = await fetch('http://orbitibro.ddns.net:8088/api/Players/' + this.state.name);
         data = await response.json();
     }

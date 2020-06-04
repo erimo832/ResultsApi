@@ -11,7 +11,7 @@ export class Home extends Component {
       <div>
         <h1>{i18n.t('home_header')}</h1>
         <p>{i18n.t('home_description')}</p>
-        <img src={logo} width="100%"/>
+        <img src={logo} width="100%" alt="orbiTibro"/>
       </div>
     );
   }
