@@ -23,7 +23,7 @@ namespace ResultManager.Managers
 
             foreach (var player in players)
             {
-                var rounds = allResults.Where(z => z.FullName == player).OrderByDescending(x => x.Points).ThenBy(x => x.HcpScore).Take(serie.Settings.RoundsToCount);                
+                var rounds = allResults.Where(z => z.FullName == player).OrderByDescending(x => x.Points).ThenBy(x => x.HcpScore);
                 var numOfRounds = rounds.Count();
 
                 result.Add(new CtpPlacement

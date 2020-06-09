@@ -2,31 +2,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import i18n from "../../i18n";
 
-export class PlayerInfo extends Component {
-  static displayName = PlayerInfo.name;
+export class PlayerInfo extends Component {  
 
   constructor(props) {
     super(props);
-    var name = "";
-    if(props.location && props.location.playerName)
-        name = props.location.playerName.player;
-
+    
     this.state = { 
-        playerInfo: [],         
+        rounds: [],         
         name: name,
         loading: true 
     };
   }
 
-  componentDidMount() {
-    this.populateResultData();
-  }
-
-//npm i react-apexcharts
-//chart.js https://www.npmjs.com/package/chart.js
-
-  //Ugly substring to show date
-  static renderPlayerInfoTable(info) {
+  renderPlayerInfoTable(info) {
     if(info.length === 0)
         return (<div>{i18n.t('playersinfo_no_found')}</div>);
 
@@ -64,9 +52,7 @@ export class PlayerInfo extends Component {
   }
 
   render() {    
-    let contents = this.state.loading
-      ? <p><em>{i18n.t('common_loading')}</em></p>
-      : PlayerInfo.renderPlayerInfoTable(this.state.playerInfo);
+    let contents = this.renderPlayerInfoTable(this.state.rounds);
     
     return (
       <div>
@@ -74,14 +60,5 @@ export class PlayerInfo extends Component {
         {contents}
       </div>
     );
-  }
-
-  async populateResultData() {
-    var data = [];
-    if(this.state.name !== "") {
-        const response = await fetch('http://orbitibro.ddns.net:8088/api/Players/' + this.state.name);
-        data = await response.json();
-    }
-    this.setState({ playerInfo: data, loading: false });
   }
 }
