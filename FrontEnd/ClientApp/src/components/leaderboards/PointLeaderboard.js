@@ -4,33 +4,25 @@ import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
 import {Container, Row, Col } from 'react-bootstrap'
 import i18n from "../../i18n";
+import { Grid } from '../common/Grid';
 
 export class PointLeaderboard extends Component {
   static displayName = PointLeaderboard.name;
-
+  
   constructor(props) {
     super(props);
     this.state = 
     { 
       series: [], 
       loading: true,
-      selectedPlayers: [] 
+      selectedPlayers: [],
+      sortColumn: 'place',
+      sortOrder: 'desc'
     };
   }
 
   componentDidMount() {
     this.populateResultData();
-  }
-
-  handlePlayerSelected(name) {
-    var players = this.state.selectedPlayers;
-    if(players.includes(name))
-      players.splice(players.indexOf(name), 1);//remove
-    else
-    players.push(name);
-
-    this.setState({ selectedPlayer: name });
-    this.setState({ selectedPlayers: players });
   }
 
   renderSeriesTable(series) {
@@ -48,7 +40,6 @@ export class PointLeaderboard extends Component {
     
     for (let i = 0, len = series.length; i < len; i++) {
       const key = i + 1;
-      var data = this.getPlayersData(series[i]);
       items.push(
         <Panel header={`${series[i].serieName}`} key={key}>
           <Container>
@@ -58,27 +49,8 @@ export class PointLeaderboard extends Component {
                </Col>
             </Row>
             <Row>
-              <Col sm={12} lg={12}>
-                <table className='table' aria-labelledby="tabelLabel">
-                  <thead>
-                    <tr>
-                      <th>{i18n.t('column_place')}</th>
-                      <th>{i18n.t('column_name')}</th>
-                      <th>{i18n.t('column_totalpoints')}</th>
-                      <th className="d-none d-lg-table-cell">{i18n.t('column_avgpoints')}</th>
-                      <th className="d-none d-md-table-cell">{i18n.t('column_avghcpscore')}</th> 
-                      <th className="d-none d-lg-table-cell">{i18n.t('column_totalhcpscore')}</th>
-                      <th className="d-none d-sm-table-cell">{i18n.t('column_maxpoints')}</th>
-                      <th className="d-none d-sm-table-cell">{i18n.t('column_minpoints')}</th>
-                      <th className="d-none d-lg-table-cell">{i18n.t('column_rounds')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map(obj =>
-                      this.getRow(obj)
-                    )}
-                  </tbody>
-                </table>
+              <Col sm={12} lg={12}>                
+                <Grid data={this.getDataForGrid(series[i].placements)} format={this.getGridConf()} />
               </Col>
             </Row>
         </Container>
@@ -88,55 +60,36 @@ export class PointLeaderboard extends Component {
     return items;
   }
 
-  getRow(obj)
+  getGridConf()
   {
-    if(obj.isDetails)
-    {
-      return (
-        <tr>
-          <td colSpan={9} style={{textAlign: 'center'}}>{obj.player.topResults.map(x => x.points).join(' - ')}</td>
-        </tr>
-      );
-    }
-
-    return (
-      <tr key={obj.player.fullName} onClick={() => this.handlePlayerSelected(obj.player.fullName)}>
-        <td>{obj.player.place}</td>
-        <td>{obj.player.fullName}</td>
-        <td>{obj.player.totalPoints}</td>
-        <td className="d-none d-lg-table-cell">{obj.player.avgPoints}</td>
-        <td className="d-none d-md-table-cell">{obj.player.avgHcpScore}</td>
-        <td className="d-none d-lg-table-cell">{obj.player.totalHcpScore}</td>
-        <td className="d-none d-sm-table-cell">{obj.player.topResults[0].points}</td>
-        <td className="d-none d-sm-table-cell">{obj.player.topResults[obj.player.topResults.length - 1].points}</td>
-        <td className="d-none d-lg-table-cell">{obj.player.numberOfRounds}</td>
-      </tr>
-    );
+    return {
+      className: "table",
+      key: "fullName",
+      detailsArray: "topResults",
+      detailsValue: "points",
+      columns: [
+        {columnName: "place",           headerText: i18n.t('column_place'),         headerClassName: "", rowClassName: ""},
+        {columnName: "fullName",        headerText: i18n.t('column_name'),          headerClassName: "", rowClassName: ""},
+        {columnName: "totalPoints",     headerText: i18n.t('column_totalpoints'),   headerClassName: "", rowClassName: ""},
+        {columnName: "avgPoints",       headerText: i18n.t('column_avgpoints'),     headerClassName: "d-none d-lg-table-cell", rowClassName: "d-none d-lg-table-cell"},
+        {columnName: "avgHcpScore",     headerText: i18n.t('column_avghcpscore'),   headerClassName: "d-none d-md-table-cell", rowClassName: "d-none d-md-table-cell"},
+        {columnName: "totalHcpScore",   headerText: i18n.t('column_totalhcpscore'), headerClassName: "d-none d-lg-table-cell", rowClassName: "d-none d-lg-table-cell"},
+        {columnName: "maxPoints",       headerText: i18n.t('column_maxpoints'),     headerClassName: "d-none d-sm-table-cell", rowClassName: "d-none d-sm-table-cell"},
+        {columnName: "minPoints",       headerText: i18n.t('column_minpoints'),     headerClassName: "d-none d-sm-table-cell", rowClassName: "d-none d-sm-table-cell"},        
+        {columnName: "numberOfRounds",  headerText: i18n.t('column_rounds'),        headerClassName: "d-none d-lg-table-cell", rowClassName: "d-none d-lg-table-cell"}        
+      ]
+    };
   }
 
-  getPlayersData(serie)
+  getDataForGrid(data)
   {
-    var result = [];
-    serie.placements.map(player =>
-      {
-        result.push(
-        {
-          isDetails: false,
-          player: player
-        });
+    data.map(x => 
+    { // add aggragated values
+      x.maxPoints = x.topResults[0].points;
+      x.minPoints = x.topResults[x.topResults.length - 1].points
+    });
 
-        if(this.state.selectedPlayers.includes(player.fullName))
-        {
-          result.push(
-            {
-              isDetails: true,
-              player: player
-            });
-        }
-      }
-    );
-
-    return result;
+    return data;
   }
 
   render() {

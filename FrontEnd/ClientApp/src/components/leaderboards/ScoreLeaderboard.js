@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
 import {Container, Row, Col } from 'react-bootstrap'
 import i18n from "../../i18n";
+import { Grid } from '../common/Grid';
 
 export class ScoreLeaderboard extends Component {
   static displayName = ScoreLeaderboard.name;
@@ -22,17 +23,6 @@ export class ScoreLeaderboard extends Component {
     this.populateResultData();
   }
 
-  handlePlayerSelected(name) {
-    var players = this.state.selectedPlayers;
-    if(players.includes(name))
-      players.splice(players.indexOf(name), 1);//remove
-    else
-    players.push(name);
-
-    this.setState({ selectedPlayer: name });
-    this.setState({ selectedPlayers: players });
-  }
-
   renderSeriesTable(series) {
     return (<div>           
       <Collapse
@@ -49,7 +39,6 @@ export class ScoreLeaderboard extends Component {
     
     for (let i = 0, len = series.length; i < len; i++) {
       const key = i + 1;
-      var data = this.getPlayersData(series[i]);
       items.push(
         <Panel header={`${series[i].serieName}`} key={key}>
           <Container>
@@ -60,24 +49,7 @@ export class ScoreLeaderboard extends Component {
             </Row>
             <Row>
               <Col sm={12} lg={12}>
-                <table className='table' aria-labelledby="tabelLabel"> {/* table-striped */}
-                  <thead>
-                    <tr>
-                      <th>{i18n.t('column_place')}</th>
-                      <th>{i18n.t('column_name')}</th>
-                      <th>{i18n.t('column_avgscore')}</th>
-                      <th className="d-none d-lg-table-cell">{i18n.t('column_totalscore')}</th>
-                      <th className="d-none d-sm-table-cell">{i18n.t('column_minthrows')}</th>
-                      <th className="d-none d-sm-table-cell">{i18n.t('column_maxthrows')}</th>
-                      <th className="d-none d-lg-table-cell">{i18n.t('column_rounds')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map(obj =>
-                      this.getRow(obj)
-                    )}
-                  </tbody>
-                </table>
+                <Grid data={this.getDataForGrid(series[i].placements)} format={this.getGridConf()} />
               </Col>
             </Row>
         </Container>
@@ -87,53 +59,34 @@ export class ScoreLeaderboard extends Component {
     return items;
   }
 
-  getRow(obj)
+  getGridConf()
   {
-    if(obj.isDetails)
-    {
-      return (
-        <tr>
-          <td colSpan={9} style={{textAlign: 'center'}}>{obj.player.topResults.map(x => x.score).join(' - ')}</td>          
-        </tr>
-      );
-    }
-
-    return (
-      <tr key={obj.player.fullName} onClick={() => this.handlePlayerSelected(obj.player.fullName)}>
-        <td>{obj.player.place}</td>
-        <td>{obj.player.fullName}</td>
-        <td>{obj.player.avgScore}</td>
-        <td className="d-none d-lg-table-cell">{obj.player.totalScore}</td>
-        <td className="d-none d-sm-table-cell">{obj.player.topResults[0].score}</td>
-        <td className="d-none d-sm-table-cell">{obj.player.topResults[obj.player.topResults.length - 1].score}</td>
-        <td className="d-none d-lg-table-cell">{obj.player.numberOfRounds}</td>
-      </tr>
-    );
+    return {
+      className: "table",
+      key: "fullName",
+      detailsArray: "topResults",
+      detailsValue: "score",
+      columns: [
+        {columnName: "place",           headerText: i18n.t('column_place'),     headerClassName: "",                        rowClassName: ""},
+        {columnName: "fullName",        headerText: i18n.t('column_name'),      headerClassName: "",                        rowClassName: ""},
+        {columnName: "avgScore",        headerText: i18n.t('column_avgscore'),  headerClassName: "",                        rowClassName: ""},
+        {columnName: "totalScore",      headerText: i18n.t('column_totalscore'),headerClassName: "d-none d-lg-table-cell",  rowClassName: "d-none d-lg-table-cell"},
+        {columnName: "minScore",        headerText: i18n.t('column_minthrows'), headerClassName: "d-none d-sm-table-cell",  rowClassName: "d-none d-sm-table-cell"},
+        {columnName: "maxScore",        headerText: i18n.t('column_maxthrows'), headerClassName: "d-none d-sm-table-cell",  rowClassName: "d-none d-sm-table-cell"},
+        {columnName: "numberOfRounds",  headerText: i18n.t('column_rounds'),    headerClassName: "d-none d-lg-table-cell",  rowClassName: "d-none d-lg-table-cell"}        
+      ]
+    };
   }
 
-  getPlayersData(serie)
+  getDataForGrid(data)
   {
-    var result = [];
-    serie.placements.map(player =>
-      {
-        result.push(
-        {
-          isDetails: false,
-          player: player
-        });
+    data.map(x => 
+    { // add aggragated values
+      x.minScore = x.topResults[0].score;
+      x.maxScore = x.topResults[x.topResults.length - 1].score
+    });
 
-        if(this.state.selectedPlayers.includes(player.fullName))
-        {
-          result.push(
-            {
-              isDetails: true,
-              player: player
-            });
-        }
-      }
-    );
-
-    return result;
+    return data;
   }
 
   render() {
