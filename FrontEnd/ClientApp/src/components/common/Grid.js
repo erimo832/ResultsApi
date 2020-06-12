@@ -89,7 +89,7 @@ export class Grid extends Component {
         </tr>
         );
   }
-    
+
   getDataWithDetails(data)
   {
     let result = [];
@@ -103,7 +103,7 @@ export class Grid extends Component {
           value: x
         });
 
-        if(this.state.selectedRows.includes(x[this.state.format.key]))
+        if(this.state.format.detailsValue !== "" && this.state.selectedRows.includes(x[this.state.format.key]))
         {
             let col = this.state.format.detailsValue;
             result.push(

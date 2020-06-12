@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import i18n from "../i18n";
+import { Grid } from './common/Grid';
 
 export class Hcp extends Component {
   static displayName = Hcp.name;
@@ -14,32 +15,35 @@ export class Hcp extends Component {
     this.populateResultData();
   }
 
-  static renderHcpTable(hcpList) {
+  renderHcpTable(hcpList) {
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>{i18n.t('column_name')}</th>
-            <th>{i18n.t('column_hcp')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {hcpList.map(player =>
-            <tr key={player.fullName}>
-                <td>{player.fullName}</td>
-                <td>{player.hcp}</td>
-              
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <Grid data={this.getDataForGrid(hcpList)} format={this.getGridConf()} />
     );
+  }
+
+  getGridConf()
+  {
+    return {
+      className: "table table-striped",
+      key: "fullName",
+      detailsArray: "",
+      detailsValue: "",
+      columns: [        
+        {columnName: "fullName",  headerText: i18n.t('column_name'), headerClassName: "", rowClassName: ""},
+        {columnName: "hcp",       headerText: i18n.t('column_hcp'),  headerClassName: "", rowClassName: ""}
+      ]
+    };
+  }
+
+  getDataForGrid(data)
+  {
+    return data;
   }
 
   render() {    
     let contents = this.state.loading
       ? <p><em>{i18n.t('common_loading')}</em></p>
-      : Hcp.renderHcpTable(this.state.hcp);
+      : this.renderHcpTable(this.state.hcp);
      
     return (
       <div>

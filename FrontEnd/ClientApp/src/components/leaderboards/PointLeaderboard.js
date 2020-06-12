@@ -83,7 +83,7 @@ export class PointLeaderboard extends Component {
 
   getDataForGrid(data)
   {
-    data.map(x => 
+    data.forEach(x => 
     { // add aggragated values
       x.maxPoints = x.topResults[0].points;
       x.minPoints = x.topResults[x.topResults.length - 1].points

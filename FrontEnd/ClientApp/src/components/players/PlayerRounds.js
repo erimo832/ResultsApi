@@ -35,7 +35,7 @@ export class PlayerInfo extends Component {
             </thead>
             <tbody>
                 {info.events.map(x =>
-                <tr key={x.time} class={x.inHcpAvgCalculation ? 'avg' : (x.inHcpCalculation === true ? 'top' : 'none' ) }>                    
+                <tr key={x.time} className={x.inHcpAvgCalculation ? 'avg' : (x.inHcpCalculation === true ? 'top' : 'none' ) }>                    
                     <td className="d-none d-lg-table-cell">{x.eventName}</td>
                     <td>{x.time.substring(0,10)}</td>
                     <td>{x.place}</td>

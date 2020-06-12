@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
 import {Container, Row, Col } from 'react-bootstrap'
 import i18n from "../../i18n";
+import { Grid } from '../common/Grid';
 
 export class CtpLeaderboard extends Component {
   static displayName = CtpLeaderboard.name;
@@ -17,7 +18,7 @@ export class CtpLeaderboard extends Component {
     this.populateResultData();
   }
 
-  static renderSeriesTable(series) {
+  renderSeriesTable(series) {
     return (<div>           
       <Collapse
         accordion={false}
@@ -28,7 +29,7 @@ export class CtpLeaderboard extends Component {
     );
   }
 
-  static getItems(series) {
+  getItems(series) {
     const items = [];
     for (let i = 0, len = series.length; i < len; i++) {
       const key = i + 1;
@@ -37,26 +38,7 @@ export class CtpLeaderboard extends Component {
           <Container>            
             <Row>            
               <Col sm={12} lg={12}>                
-                <table className='table table-striped' aria-labelledby="tabelLabel">
-                  <thead>
-                    <tr>              
-                      <th>{i18n.t('column_place')}</th>
-                      <th>{i18n.t('column_name')}</th>
-                      <th>{i18n.t('column_numerofctps')}</th>
-                      <th className="d-none d-sm-table-cell">{i18n.t('column_rounds')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {series[i].placements.map(player =>
-                      <tr key={player.fullName}>
-                          <td>{player.place}</td>
-                          <td>{player.fullName}</td>                  
-                          <td>{player.ctps}</td>
-                          <td className="d-none d-sm-table-cell">{player.numberOfRounds}</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                <Grid data={this.getDataForGrid(series[i].placements)} format={this.getGridConf()} />
               </Col>              
             </Row>
             
@@ -67,10 +49,31 @@ export class CtpLeaderboard extends Component {
     return items;
   }
 
+  getGridConf()
+  {
+    return {
+      className: "table",
+      key: "fullName",
+      detailsArray: "",
+      detailsValue: "",
+      columns: [
+        {columnName: "place",           headerText: i18n.t('column_place'),         headerClassName: "", rowClassName: ""},
+        {columnName: "fullName",        headerText: i18n.t('column_name'),          headerClassName: "", rowClassName: ""},
+        {columnName: "ctps",            headerText: i18n.t('column_numerofctps'),   headerClassName: "", rowClassName: ""},      
+        {columnName: "numberOfRounds",  headerText: i18n.t('column_rounds'),        headerClassName: "d-none d-sm-table-cell", rowClassName: "d-none d-sm-table-cell"}        
+      ]
+    };
+  }
+
+  getDataForGrid(data)
+  {
+    return data;
+  }
+
   render() {
     let contents = this.state.loading
       ? <p><em>{i18n.t('common_loading')}</em></p>
-      : CtpLeaderboard.renderSeriesTable(this.state.series);
+      : this.renderSeriesTable(this.state.series);
      
     return (
       <div>

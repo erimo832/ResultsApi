@@ -80,7 +80,7 @@ export class ScoreLeaderboard extends Component {
 
   getDataForGrid(data)
   {
-    data.map(x => 
+    data.forEach(x => 
     { // add aggragated values
       x.minScore = x.topResults[0].score;
       x.maxScore = x.topResults[x.topResults.length - 1].score
