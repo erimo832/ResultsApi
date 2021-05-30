@@ -54,6 +54,7 @@ namespace ResultManager.Managers
                     };
 
                     res.Hcp = _rule.CalculateHcp(player.Value.Rounds.Where(x => x.RoundTime < round.RoundTime).ToList());
+                    res.HcpAfterRound = _rule.CalculateHcp(player.Value.Rounds.Where(x => x.RoundTime <= round.RoundTime).ToList());
                     res.HcpScore = res.Score - res.Hcp;
 
                     result.Results.Add(res);

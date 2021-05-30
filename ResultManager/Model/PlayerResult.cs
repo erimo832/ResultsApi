@@ -13,6 +13,7 @@ namespace ResultManager.Model
 
         public int Score { get; set; }
         public double Hcp { get; set; }
+        public double HcpAfterRound { get; set; }
         public double HcpScore { get; set; }
         public int Place { get; set; }
         public double Points { get; set; }
