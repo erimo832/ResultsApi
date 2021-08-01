@@ -1,38 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ResultApi.Common;
 using ResultApi.ViewModel;
 using ResultManager.Managers;
 using ResultManager.Model;
-using ResultManager.Points;
-using ResultManager.Respository;
-using ResultManager.Rules;
 
 namespace ResultApi.Controllers
 {
     [Route("api/[controller]")]
     public class SeriesController : Controller
     {
-        private IRoundRespository roundRespository;
-        private ISeriesRepository seriesRepository;
-        private ISeriesManager seriesManager;
-        private IHcpRule hcpRule;
-        private IPointsCalulation pointCalculation;
-        private IRoundManager roundManager;
-        private ILeaderboardManager leaderboardManager;
-        
-        public SeriesController()
-        {
-            roundRespository = new RoundRespository();
-            hcpRule = new RuleAvgThirdCeiled();            
-            pointCalculation = new PointsCalulation();
-            roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
-            seriesRepository = new SeriesRepository();
+        private ISeriesManager SeriesManager { get; }
+        private ILeaderboardManager LeaderboardManager { get; }
 
-            seriesManager = new SeriesManager(roundManager, seriesRepository);
-            leaderboardManager = new LeaderboardManager();
+        public SeriesController(ISeriesManager seriesManager, ILeaderboardManager leaderboardManager)
+        {
+            SeriesManager = seriesManager;
+            LeaderboardManager = leaderboardManager;
         }
 
         // GET: api/<controller>
@@ -41,7 +26,7 @@ namespace ResultApi.Controllers
         {
             using (new TimeMonitor(HttpContext))
             {
-                return seriesManager.GetSeries();
+                return SeriesManager.GetSeries();
             }
         }
 
@@ -50,11 +35,11 @@ namespace ResultApi.Controllers
         {
             using (new TimeMonitor(HttpContext))
             {
-                var serieInfos = seriesManager.GetSerieInfos();
+                var serieInfos = SeriesManager.GetSerieInfos();
                 var serieInfo = serieInfos.FirstOrDefault(x => x.Name == name);
 
                 if (serieInfo != null)
-                    return seriesManager.GetSerie(serieInfo);
+                    return SeriesManager.GetSerie(serieInfo);
 
                 Response.StatusCode = 404;
                 return null;
@@ -67,7 +52,7 @@ namespace ResultApi.Controllers
             using (new TimeMonitor(HttpContext))
             {
                 var result = new List<HcpScoreLeaderboard>();
-                var series = seriesManager.GetSeries();
+                var series = SeriesManager.GetSeries();
 
                 foreach (var serie in series)
                 {
@@ -75,7 +60,7 @@ namespace ResultApi.Controllers
                     {
                         SerieName = serie.Name,
                         RoundsToCount = serie.Settings.RoundsToCount,
-                        Placements = leaderboardManager.GetHcpLeaderboard(serie).ToList()
+                        Placements = LeaderboardManager.GetHcpLeaderboard(serie).ToList()
                     });
                 }
 
@@ -89,7 +74,7 @@ namespace ResultApi.Controllers
             using (new TimeMonitor(HttpContext))
             {
                 var result = new List<ScoreLeaderboard>();
-                var series = seriesManager.GetSeries();
+                var series = SeriesManager.GetSeries();
 
                 foreach (var serie in series)
                 {
@@ -97,7 +82,7 @@ namespace ResultApi.Controllers
                     {
                         SerieName = serie.Name,
                         RoundsToCount = serie.Settings.RoundsToCount,
-                        Placements = leaderboardManager.GetScoreLeaderboard(serie).ToList()
+                        Placements = LeaderboardManager.GetScoreLeaderboard(serie).ToList()
                     });
                 }
 
@@ -111,14 +96,14 @@ namespace ResultApi.Controllers
             using (new TimeMonitor(HttpContext))
             {
                 var result = new List<CtpLeaderboard>();
-                var series = seriesManager.GetSeries();
+                var series = SeriesManager.GetSeries();
 
                 foreach (var serie in series)
                 {
                     result.Add(new CtpLeaderboard
                     {
                         SerieName = serie.Name,
-                        Placements = leaderboardManager.GetCtpLeaderboard(serie).ToList()
+                        Placements = LeaderboardManager.GetCtpLeaderboard(serie).ToList()
                     });
                 }
 

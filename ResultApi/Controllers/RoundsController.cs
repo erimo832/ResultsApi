@@ -1,36 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ResultApi.Common;
 using ResultManager.Managers;
 using ResultManager.Model;
-using ResultManager.Points;
-using ResultManager.Respository;
-using ResultManager.Rules;
 
 namespace ResultApi.Controllers
 {
     [Route("api/[controller]")]
     public class RoundsController : Controller
     {
-        private IRoundRespository roundRespository;
-        private ISeriesRepository seriesRepository;
-        private ISeriesManager seriesManager;
-        private IHcpRule hcpRule;
-        private IPointsCalulation pointCalculation;
-        private IRoundManager roundManager;
+        private ISeriesManager SeriesManager { get; }
+        private IRoundManager RoundManager { get; }
 
-        public RoundsController()
+        public RoundsController(ISeriesManager seriesManager, IRoundManager roundManager)
         {
-            roundRespository = new RoundRespository();
-            seriesRepository = new SeriesRepository();
-            hcpRule = new RuleAvgThirdCeiled();            
-            pointCalculation = new PointsCalulation();
-            roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
-            seriesManager = new SeriesManager(roundManager, seriesRepository);
+            SeriesManager = seriesManager;
+            RoundManager = roundManager;
         }
                 
         [HttpGet]
@@ -39,13 +25,11 @@ namespace ResultApi.Controllers
             using (new TimeMonitor(HttpContext))
             {
                 var result = new List<Round>();
-                var series = seriesRepository.GetSerieInfos();
+                var series = SeriesManager.GetSerieInfos();
 
-                var events = roundRespository.GetRoundInformations(series);
-
-                foreach (var ev in events)
+                foreach (var item in series)
                 {
-                    result.Add(roundManager.GetRound(ev));
+                    result.AddRange(RoundManager.GetRounds(item));
                 }
 
                 return result.OrderByDescending(x => x.RoundTime);
@@ -57,12 +41,13 @@ namespace ResultApi.Controllers
         {
             using (new TimeMonitor(HttpContext))
             {
-                var serieInfos = seriesManager.GetSerieInfos();
-                var roundInfos = roundRespository.GetRoundInformations(serieInfos);
+                var serieInfos = SeriesManager.GetSerieInfos();
+                var roundInfos = RoundManager.GetRoundInformations(serieInfos);
+
                 var roundInfo = roundInfos.FirstOrDefault(x => x.Name == name);
 
                 if (roundInfo != null)
-                    return roundManager.GetRound(roundInfo);
+                    return RoundManager.GetRound(roundInfo);
 
                 Response.StatusCode = 404;
                 return null;

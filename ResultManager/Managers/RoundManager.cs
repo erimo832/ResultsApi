@@ -102,5 +102,25 @@ namespace ResultManager.Managers
 
             return result;
         }
+
+        public IList<RoundInfo> GetRoundInformations(IList<SerieInfo> series)
+        {
+            return _roundRespository.GetRoundInformations(series);
+        }
+
+        public IList<RoundInfo> GetRoundInformations(SerieInfo serie)
+        {
+            return _roundRespository.GetRoundInformations(serie);
+        }
+
+        public IList<PlayerRound> GetAllRounds()
+        {
+            return _roundRespository.GetAllRounds();
+        }
+
+        public Dictionary<string, Player> GetPlayers(IList<PlayerRound> rounds)
+        {
+            return _roundRespository.GetPlayers(rounds);
+        }
     }
 }

@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using ResultApi.Common;
 using ResultManager.Managers;
 using ResultManager.Model;
-using ResultManager.Points;
-using ResultManager.Respository;
 using ResultManager.Rules;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,23 +13,15 @@ namespace ResultApi.Controllers
     [Route("api/[controller]")]
     public class PlayersController : Controller
     {
-        private IRoundRespository roundRespository;
-        private ISeriesRepository seriesRepository;
-        private ISeriesManager seriesManager;
-        private IHcpRule hcpRule;
-        private IPointsCalulation pointCalculation;
-        private IRoundManager roundManager;
-        private IPlayerManager playerManager;
+        private IHcpRule HcpRule { get; }
+        private IRoundManager RoundManager { get; }
+        private IPlayerManager PlayerManager { get; }
 
-        public PlayersController()
+        public PlayersController(IRoundManager roundManager, IPlayerManager playerManager, IHcpRule rule)
         {
-            roundRespository = new RoundRespository();
-            seriesRepository = new SeriesRepository();            
-            hcpRule = new RuleAvgThirdCeiled();
-            pointCalculation = new PointsCalulation();
-            roundManager = new RoundManager(roundRespository, hcpRule, pointCalculation);
-            seriesManager = new SeriesManager(roundManager, seriesRepository);
-            playerManager = new PlayerManager(roundRespository, hcpRule, pointCalculation, roundManager, seriesManager);
+            RoundManager = roundManager;
+            PlayerManager = playerManager;
+            HcpRule = rule;
         }
 
         // GET: api/<controller>
@@ -40,18 +30,17 @@ namespace ResultApi.Controllers
         {
             using (new TimeMonitor(HttpContext))
             {
-                var rounds = roundRespository.GetAllRounds();
+                var rounds = RoundManager.GetAllRounds();
                 return rounds.Select(x => x.FullName).Distinct().OrderBy(x => x);
             }
         }
 
         [HttpGet("{name}")]
-        //public IEnumerable<Player> GetDetailsByName(string name)
         public PlayerDetail GetDetailsByName(string name)
         {
             using (new TimeMonitor(HttpContext))
             {
-                var details = playerManager.GetPlayerDetail(name);
+                var details = PlayerManager.GetPlayerDetail(name);
 
                 if (details != null)
                     return details;
@@ -66,25 +55,21 @@ namespace ResultApi.Controllers
         {
             using (new TimeMonitor(HttpContext))
             {
-                var serieInfos = seriesManager.GetSerieInfos();
-                var rounds = roundRespository.GetRounds(serieInfos);
-                var players = roundRespository.GetPlayers(rounds);
-
+                var rounds = RoundManager.GetAllRounds();
+                var players = RoundManager.GetPlayers(rounds);
 
                 if (players != null)
                 {
                     var result = new List<PlayerHcp>();
-                    var rule = new RuleAvgThirdCeiled();
 
                     foreach (var player in players)
                     {
                         result.Add(new PlayerHcp
                         {
                             FullName = player.Value.FullName,
-                            Hcp = rule.CalculateHcp(player.Value.Rounds)
+                            Hcp = HcpRule.CalculateHcp(player.Value.Rounds)
                         });
                     }
-
 
                     return result.OrderBy(x => x.Hcp);
                 }
@@ -99,21 +84,17 @@ namespace ResultApi.Controllers
         {
             using (new TimeMonitor(HttpContext))
             {
-                var serieInfos = seriesManager.GetSerieInfos();
-                var rounds = roundRespository.GetRounds(serieInfos);
-                var players = roundRespository.GetPlayers(rounds);
-
+                var rounds = RoundManager.GetAllRounds();
+                var players = RoundManager.GetPlayers(rounds);
 
                 var player = players.Where(x => x.Key.ToLower() == name.ToLower()).Select(x => x.Value).FirstOrDefault();
 
                 if (player != null)
                 {
-                    var rule = new RuleAvgThirdCeiled();
-
                     return new PlayerHcp
                     {
                         FullName = player.FullName,
-                        Hcp = rule.CalculateHcp(player.Rounds)
+                        Hcp = HcpRule.CalculateHcp(player.Rounds)
                     };
                 }
 
