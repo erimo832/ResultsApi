@@ -10,9 +10,14 @@ import { CtpLeaderboard} from './components/leaderboards/CtpLeaderboard';
 import './custom.css';
 import { Players } from './components/players/Players';
 import { PlayerInfo } from './components/players/PlayerInfo';
+import configData from "./config.json";
 
 export default class App extends Component {
   static displayName = App.name;
+
+  componentDidMount(){
+    document.title = configData.TitleText;
+  }
   
   render () {    
     const { t } = this.props;

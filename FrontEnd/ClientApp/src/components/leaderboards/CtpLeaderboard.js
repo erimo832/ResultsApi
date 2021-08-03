@@ -5,6 +5,7 @@ import Collapse, { Panel } from 'rc-collapse';
 import {Container, Row, Col } from 'react-bootstrap'
 import i18n from "../../i18n";
 import { Grid } from '../common/Grid';
+import configData from "../../config.json";
 
 export class CtpLeaderboard extends Component {
   static displayName = CtpLeaderboard.name;
@@ -85,7 +86,7 @@ export class CtpLeaderboard extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch('http://orbitibro.ddns.net:8088/api/Series/ctpLeaderbords');
+    const response = await fetch(configData.ApiUrl +'/api/Series/ctpLeaderbords');
     const data = await response.json();
     this.setState({ series: data, loading: false });
   }

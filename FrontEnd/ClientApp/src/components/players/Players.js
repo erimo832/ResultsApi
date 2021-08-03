@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import i18n from "../../i18n";
+import configData from "../../config.json";
 
 export class Players extends Component {
   static displayName = Players.name;
@@ -59,7 +60,7 @@ export class Players extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch('http://orbitibro.ddns.net:8088/api/Players');
+    const response = await fetch(configData.ApiUrl +'/api/Players');
     const data = await response.json();
     this.setState({ players: data, loading: false });
   }
