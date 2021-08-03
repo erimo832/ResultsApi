@@ -21,6 +21,14 @@ namespace ResultManager.Respository
         private const int Col_Total = 6;
         private const int Col_Ctp = 7;
 
+        //Refactor (repositories + model): Should not have a ref to this one here.
+        private ISeriesRepository SeriesRepository { get; }
+
+        public RoundRespository(ISeriesRepository seriesRepository)
+        {
+            SeriesRepository = seriesRepository;
+        }
+
 
         public IList<RoundInfo> GetRoundInformations(IList<SerieInfo> series)
         {            
@@ -132,10 +140,7 @@ namespace ResultManager.Respository
 
         public IList<PlayerRound> GetAllRounds()
         {
-            //Should not really have a hidden ref to SeriesRepositoy from here
-            var seriesRepository = new SeriesRepository();
-
-            return GetRounds(seriesRepository.GetSerieInfos());
+            return GetRounds(SeriesRepository.GetSerieInfos());
         }
 
 

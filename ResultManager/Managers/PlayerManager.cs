@@ -32,7 +32,6 @@ namespace ResultManager.Managers
             var events = RoundRespository.GetRoundInformations(series);
 
             //Add
-            bool first = true;
             foreach (var ev in events)
             {
                 var r = RoundManager.GetRound(ev);

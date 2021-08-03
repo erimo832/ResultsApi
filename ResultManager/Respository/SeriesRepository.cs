@@ -1,20 +1,25 @@
 ﻿using Newtonsoft.Json;
 using ResultManager.Model;
+using ResultManager.Model.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace ResultManager.Respository
 {
     public class SeriesRepository : ISeriesRepository
     {
-        private string SeriesRootPath => @"M:\www\discgolf\series";
+        private ISeriesConfiguration Config { get;}
+
+        public SeriesRepository(ISeriesConfiguration cfg)
+        {
+            Config = cfg;
+        }
 
         public IList<SerieInfo> GetSerieInfos()
         {
             var result = new List<SerieInfo>();
-            var directories = new DirectoryInfo(SeriesRootPath);
+            var directories = new DirectoryInfo(Config.SeriesPath);
 
             foreach (var item in directories.GetDirectories())
             {
@@ -26,12 +31,12 @@ namespace ResultManager.Respository
 
         public SerieInfo GetSerieInfo(string name)
         {
-            if (Directory.Exists(SeriesRootPath + @"\" + name))
+            if (Directory.Exists(Config.SeriesPath + @"\" + name))
             {
                 return new SerieInfo
                 { 
                     Name = name,
-                    SeriePath = SeriesRootPath + @"\" + name
+                    SeriePath = Config.SeriesPath + @"\" + name
                 };
             }
 

@@ -21,9 +21,10 @@ namespace ResultApi
             return
                 Host.CreateDefaultBuilder(args)
                     .UseSerilog(new LoggerConfiguration().WriteTo.File(@$"{config.GetSection("logPath").Value}\serilog.log", rollingInterval: RollingInterval.Day).CreateLogger())
-                    .ConfigureServices(service => 
+                    .ConfigureServices((builder, service) => 
                     {
-                        ResultManager.DependencyRegistration.RegisterBindings(service);
+                        
+                        ResultManager.DependencyRegistration.RegisterBindings(service, builder.Configuration);
                     })
                     .ConfigureWebHostDefaults(webBuilder =>
                     {

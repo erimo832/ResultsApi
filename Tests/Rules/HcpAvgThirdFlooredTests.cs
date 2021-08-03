@@ -1,5 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.Options;
+using NUnit.Framework;
 using ResultManager.Model;
+using ResultManager.Model.Configuration;
 using ResultManager.Rules;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace Tests.Rules
         {
             var rounds = new List<PlayerRound>();
 
-            var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateAvgScore(rounds);
 
@@ -40,7 +42,7 @@ namespace Tests.Rules
             });
 
 
-            var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateAvgScore(rounds);
 
@@ -59,7 +61,7 @@ namespace Tests.Rules
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-03"), 61)
             });
 
-            var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateAvgScore(rounds);
 
@@ -79,7 +81,7 @@ namespace Tests.Rules
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-04"), 62)
             });
 
-            var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateAvgScore(rounds);
 
@@ -100,7 +102,7 @@ namespace Tests.Rules
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-05"), 62)
             });
 
-            var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateAvgScore(rounds);
 
@@ -122,7 +124,7 @@ namespace Tests.Rules
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-06"), 64)
             });
 
-            var rule = new RuleAvgThirdFloored() { TotalRounds = 18 };
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateAvgScore(rounds);
 
@@ -141,7 +143,7 @@ namespace Tests.Rules
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-03"), 61)
             });
 
-            var rule = new RuleAvgThirdFloored() { TotalRounds = 3 };
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 3 });
 
             var value = rule.CalculateAvgScore(rounds);
 
@@ -162,7 +164,7 @@ namespace Tests.Rules
                 new Tuple<DateTime, int>(DateTime.Parse("2020-01-04"), 62)
             });
 
-            var rule = new RuleAvgThirdFloored() { TotalRounds = 3 };
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 3 });
 
             var value = rule.CalculateAvgScore(rounds);
 
@@ -179,7 +181,7 @@ namespace Tests.Rules
         public void Rules_HcpAvgThirdFloored_Should_CalculateHcp_NoRounds()
         {
             var avgScore = 0;
-            var rule = new RuleAvgThirdFloored();
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateHcp(avgScore);
 
@@ -192,7 +194,7 @@ namespace Tests.Rules
         public void Rules_HcpAvgThirdFloored_Should_CalculateHcp_Scenario_1_0()
         {
             var avgScore = 48;
-            var rule = new RuleAvgThirdFloored();
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateHcp(avgScore);
 
@@ -205,7 +207,7 @@ namespace Tests.Rules
         public void Rules_HcpAvgThirdFloored_Should_CalculateHcp_Scenario_1_1()
         {
             var avgScore = 58;
-            var rule = new RuleAvgThirdFloored();
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateHcp(avgScore);
 
@@ -218,7 +220,7 @@ namespace Tests.Rules
         public void Rules_HcpAvgThirdFloored_Should_CalculateHcp_Scenario_1_2()
         {
             var avgScore = 50;
-            var rule = new RuleAvgThirdFloored();
+            var rule = new RuleAvgThirdFloored(new HcpConfiguration { TotalRounds = 18 });
 
             var value = rule.CalculateHcp(avgScore);
 
