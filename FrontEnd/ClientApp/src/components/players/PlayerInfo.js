@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import i18n from "../../i18n";
-import configData from "../../config.json";
 
 export class PlayerInfo extends Component {
   static displayName = PlayerInfo.name;
@@ -80,7 +79,7 @@ export class PlayerInfo extends Component {
   async populateResultData() {
     var data = [];
     if(this.state.name !== "") {
-        const response = await fetch(configData.ApiUrl +'/api/Players/' + this.state.name);
+        const response = await fetch(process.env.REACT_APP_API_ENDPOINT +'/api/Players/' + this.state.name);
         data = await response.json();
     }
     this.setState({ playerInfo: data, loading: false });

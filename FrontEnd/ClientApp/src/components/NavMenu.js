@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
-import i18n from '../i18n'
-import configData from "../config.json";
+import i18n from '../i18n';
 
 export class NavMenu extends Component {
   //static displayName = NavMenu.name;
@@ -40,7 +39,7 @@ export class NavMenu extends Component {
       <header>        
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-            <NavbarBrand href={configData.BaseLink}>{configData.BaseLinkText}</NavbarBrand>
+            <NavbarBrand href={process.env.REACT_APP_NAVBAR_BaseLink}>{process.env.REACT_APP_NAVBAR_BASELINKTEXT}</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">

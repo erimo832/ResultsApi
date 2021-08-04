@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import i18n from "../i18n";
 import { Grid } from './common/Grid';
-import configData from "../config.json";
 
 export class Hcp extends Component {
   static displayName = Hcp.name;
@@ -57,7 +56,7 @@ export class Hcp extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch(configData.ApiUrl +'/api/Players/currentHcp');
+    const response = await fetch(process.env.REACT_APP_API_ENDPOINT +'/api/Players/currentHcp');
     const data = await response.json();
     this.setState({ hcp: data, loading: false });
   }

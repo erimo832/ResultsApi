@@ -5,7 +5,6 @@ import Collapse, { Panel } from 'rc-collapse';
 import {Container, Row, Col } from 'react-bootstrap'
 import i18n from "../../i18n";
 import { Grid } from '../common/Grid';
-import configData from "../../config.json";
 
 export class ScoreLeaderboard extends Component {
   static displayName = ScoreLeaderboard.name;
@@ -105,7 +104,7 @@ export class ScoreLeaderboard extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch(configData.ApiUrl +'/api/Series/scoreLeaderbords');
+    const response = await fetch(process.env.REACT_APP_API_ENDPOINT +'/api/Series/scoreLeaderbords');
     const data = await response.json();
     this.setState({ series: data, loading: false });
   }

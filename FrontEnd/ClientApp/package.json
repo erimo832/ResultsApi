@@ -23,6 +23,7 @@
   "devDependencies": {
     "ajv": "^6.12.6",
     "cross-env": "^5.2.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.1.0",
     "eslint-plugin-flowtype": "^4.7.0",
@@ -37,6 +38,8 @@
   "scripts": {
     "start": "rimraf ./build && react-scripts start",
     "build": "react-scripts build",
+    "build:orbitibro": "env-cmd -f .env.orbitibro npm run-script build",
+    "build:skovde": "env-cmd -f .env.skovde npm run-script build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/"

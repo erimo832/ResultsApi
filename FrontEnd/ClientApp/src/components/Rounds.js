@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import Collapse, { Panel } from 'rc-collapse';
 import i18n from "../i18n";
 import { Grid } from './common/Grid';
-import configData from "../config.json";
 
 export class Rounds extends Component {
   static displayName = Rounds.name;
@@ -87,7 +86,7 @@ export class Rounds extends Component {
   }
 
   async populateResultData() {
-    const response = await fetch(configData.ApiUrl +'/api/Rounds');
+    const response = await fetch(process.env.REACT_APP_API_ENDPOINT +'/api/Rounds');
     const data = await response.json();
     this.setState({ rounds: data, loading: false });
   }
